@@ -19,13 +19,13 @@ SOURCES +=      imageloader_plugin.cpp \
 OTHER_FILES =   qmldir
 
 # Path for QML files
-qmlFiles.path = $$[QT_INSTALL_IMPORTS]/$$PLUGIN_IMPORT_PATH/imageloader
+qmlFiles.path = $${IMPORTSDIR}/$$PLUGIN_IMPORT_PATH/imageloader
 qmlFiles.files = $${OTHER_FILES}
 export(qmlFiles.path)
 export(qmlFiles.files)
 
 # Path for target
-target.path = $$[QT_INSTALL_IMPORTS]/$$PLUGIN_IMPORT_PATH/imageloader
+target.path = $${IMPORTSDIR}/$$PLUGIN_IMPORT_PATH/imageloader
 export(target.path)
 
 # Installs

@@ -18,9 +18,9 @@ SOURCES +=  loginmanager.cpp \
 
 
 # Deployment
-target.path = $$[QT_INSTALL_LIBS]
+target.path = $${LIBDIR}
 
-headers.path = $$[QT_INSTALL_HEADERS]/login
+headers.path = $${INCLUDEDIR}/login
 headers.files = $${HEADERS}
 
 INSTALLS += target

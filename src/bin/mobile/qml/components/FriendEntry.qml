@@ -14,34 +14,49 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
-
 import QtQuick 1.1
+import com.nokia.meego 1.0
 import "../UiConstants.js" as Ui
 
-Image {
-    id: image
-    property string url
-    onUrlChanged: _imageLoader_.load(url)
-    smooth: true
-    asynchronous: true
-    opacity: 0
-    states: State {
-        name: "visible"; when: image.status == Image.Ready
-        PropertyChanges {
-            target: image
-            opacity: 1
-        }
-    }
-    Behavior on opacity {
-        NumberAnimation {duration: Ui.ANIMATION_DURATION_FAST}
+Item
+{
+    id: container
+    signal clicked
+    property string identifier
+    property alias name: text.text
+    property QtObject queryManager
+
+    height: Ui.LIST_ITEM_HEIGHT_DEFAULT
+    width: parent.width
+
+    BorderImage {
+        id: background
+        anchors.fill: parent
+        visible: mouseArea.pressed
+        source: "image://theme/meegotouch-list" + (theme.inverted ? "-inverted" : "") +
+                "-background-pressed-center"
     }
 
-    Connections {
-        target: _imageLoader_
-        onLoaded: {
-            if (url == image.url) {
-                image.source = path
-            }
-        }
+    FacebookPicture {
+        id: picture
+        anchors.left: parent.left;
+        anchors.leftMargin: Ui.MARGIN_DEFAULT
+        anchors.verticalCenter: parent.verticalCenter
+        identifier: container.identifier
+    }
+
+    Label {
+        id: text
+        anchors.left: picture.right; anchors.leftMargin: Ui.MARGIN_DEFAULT
+        anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT
+        anchors.verticalCenter: parent.verticalCenter
+        font.pixelSize: Ui.FONT_SIZE_MLARGE
+        horizontalAlignment: Text.AlignHCenter
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: container
+        onClicked: container.clicked()
     }
 }

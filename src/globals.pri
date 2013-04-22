@@ -6,15 +6,28 @@ VERSION_MAJOR = 0
 VERSION_MINOR = 0
 VERSION_PATCH = 6
 
+isEmpty(PREFIX) {
+    PREFIX=/usr/
+}
+
 # Default directories
 isEmpty(BINDIR) {
-    BINDIR = /bin
+    BINDIR = $${PREFIX}/bin
+}
+isEmpty(LIBDIR) {
+    LIBDIR = $${PREFIX}/lib
+}
+isEmpty(INCLUDEDIR) {
+    INCLUDEDIR = $${PREFIX}/include
 }
 isEmpty(SHAREDIR) {
-    SHAREDIR = /share/$${NAME}
+    SHAREDIR = $${PREFIX}/share/$${NAME}
 }
 isEmpty(OPTDIR) {
     OPTDIR = /opt/$${NAME}
+}
+isEmpty(IMPORTSDIR) {
+    IMPORTSDIR = $${PREFIX}/lib/qt4/imports
 }
 # QML plugins
 PLUGIN_IMPORT_PATH = org/SfietKonstantin/qfb

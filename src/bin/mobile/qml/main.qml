@@ -116,6 +116,9 @@ PageStackWindow {
         }
     }
 
+    EmptyFilter {id: _emptyFilter_}
+    ContentItemTypeFilter {id: _friendsFilter_; type: Facebook.User}
+
     QFBImageLoader {
         id: _imageLoader_
     }
@@ -125,6 +128,7 @@ PageStackWindow {
         property bool loading: false
         function getInitialInfo() {
             loading = true
+            _facebook_.filters = [_emptyFilter_]
             _facebook_.populate()
         }
         function getCover() {
@@ -147,23 +151,6 @@ PageStackWindow {
             }
         }
     }
-//    QFBUserLoader {
-//        id: meLoader
-//        function load() {
-//            request("me", "fields=id,name")
-//        }
-//        queryManager: QUERY_MANAGER
-//        onLoaded: {
-//            if (ME.name == "") {
-//                ME.facebookId = user.facebookId
-//                ME.name = user.name
-//                request("me", "fields=cover")
-//            } else if (ME.coverUrl == "") {
-//                ME.coverUrl = user.cover.source
-//            }
-//        }
-//    }
-
 //    QFBTypeLoader {
 //        id: _type_resolver_
 //        queryManager: QUERY_MANAGER

@@ -16,31 +16,44 @@
 
 
 import QtQuick 1.1
+//import org.SfietKonstantin.qfb 4.0
 import "../UiConstants.js" as Ui
 
 Image {
-    id: image
-    property string url
-    onUrlChanged: _imageLoader_.load(url)
+    id: picture
+    property string identifier
+    onIdentifierChanged: _imageLoader_.load(_imageLoader_.pictureUrl(identifier,
+                                                                     _facebook_.accessToken))
+    property bool loading: state != "visible"
+    width: Ui.ICON_SIZE_DEFAULT
+    height: Ui.ICON_SIZE_DEFAULT
     smooth: true
     asynchronous: true
     opacity: 0
     states: State {
-        name: "visible"; when: image.status == Image.Ready
+        name: "visible"; when: picture.status == Image.Ready
         PropertyChanges {
-            target: image
+            target: picture
             opacity: 1
         }
     }
-    Behavior on opacity {
-        NumberAnimation {duration: Ui.ANIMATION_DURATION_FAST}
-    }
+    transitions: [
+        Transition {
+            from: ""
+            to: "visible"
+            NumberAnimation {
+                target: picture
+                property: "opacity"
+                duration: Ui.ANIMATION_DURATION_FAST
+            }
+        }
+    ]
 
     Connections {
         target: _imageLoader_
         onLoaded: {
-            if (url == image.url) {
-                image.source = path
+            if (url == _imageLoader_.pictureUrl(picture.identifier,_facebook_.accessToken)) {
+                picture.source = path
             }
         }
     }

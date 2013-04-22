@@ -1,3 +1,4 @@
+INCLUDEPATH += $$PWD/qjson/src/
 INCLUDE_HEADERS +=  $$PWD/qjson/src/parser.h \
                     $$PWD/qjson/src/qobjecthelper.h \
                     $$PWD/qjson/src/parserrunnable.h \

@@ -13,11 +13,11 @@ QML_FOLDER = $${SHAREDIR}/qml
 DATA_FOLDER = $${SHAREDIR}/data
 }
 
-DEFINES += 'MAIN_QML_FILE=\'\"$${DEFINES_PREFIX}/$${QML_FOLDER}/main.qml\"\''
+DEFINES += 'MAIN_QML_FILE=\'\"$${QML_FOLDER}/main.qml\"\''
 !contains(MEEGO_EDITION, harmattan) {
-DEFINES += 'IMPORT_PATH=\'\"$${DEFINES_PREFIX}/$$[QT_INSTALL_IMPORTS]"\''
+DEFINES += 'IMPORT_PATH=\'\"$$[QT_INSTALL_IMPORTS]"\''
 }
-DEFINES += 'DATA_PATH=\'\"$${DEFINES_PREFIX}/$${DATA_FOLDER}/\"\''
+DEFINES += 'DATA_PATH=\'\"$${DATA_FOLDER}/\"\''
 
 INCLUDEPATH += ../../lib/login
 #INCLUDEPATH += ../../lib/base
@@ -28,7 +28,7 @@ LIBS += -L../../lib/login -l$${NAME}login
 
 # Friends specific
 HEADERS += clientidinterface.h
-DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DEFINES_PREFIX}/$${DATA_FOLDER}/libqfbmobile-clientidplugin.so\"\''
+DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DATA_FOLDER}/libqfbmobile-clientidplugin.so\"\''
 # End Friends specific
 
 HEADERS +=      tokenmanager.h \
@@ -57,13 +57,13 @@ QML_ROOT +=         qml/main.qml \
 QML_COMPONENTS +=   qml/components/Separator.qml \
                     qml/components/GroupIndicator.qml \
                     qml/components/FacebookImage.qml \
-#                    qml/components/FacebookPicture.qml \
+                    qml/components/FacebookPicture.qml \
                     qml/components/LoadingIndicator.qml \
                     qml/components/LoadingMessage.qml \
                     qml/components/LoadingButton.qml \
                     qml/components/EmptyStateLabel.qml \
                     qml/components/ClickableEntry.qml \
-#                    qml/components/FriendEntry.qml \
+                    qml/components/FriendEntry.qml \
 #                    qml/components/GroupBookmarkEntry.qml \
 #                    qml/components/CommentEntry.qml \
                     qml/components/Cover.qml \
@@ -82,7 +82,7 @@ QML_PAGES +=        qml/pages/MainPage.qml \
                     qml/pages/DevelopersPage.qml \
 #                    qml/pages/NewsPage.qml \
 #                    qml/pages/AlbumListPage.qml \
-#                    qml/pages/FriendListPage.qml \
+                    qml/pages/FriendListPage.qml \
 #                    qml/pages/GroupPage.qml \
 #                    qml/pages/GroupListPage.qml \
 #                    qml/pages/LikesPage.qml \
@@ -146,12 +146,12 @@ INSTALLS +=     target \
                 qmlDialogsFiles \
                 dataFiles
 
-#contains(MEEGO_EDITION, harmattan) {
-#    desktopFile.files = qfb.desktop
-#    desktopFile.path = /usr/share/applications
+contains(MEEGO_EDITION, harmattan) {
+    desktopFile.files = qfb.desktop
+    desktopFile.path = /usr/share/applications
 
-#    icon.files = qfb.png
-#    icon.path = /usr/share/icons/hicolor/80x80/apps
+    icon.files = qfb.png
+    icon.path = /usr/share/icons/hicolor/80x80/apps
 
-#    INSTALLS += desktopFile icon
-#}
+    INSTALLS += desktopFile icon
+}
