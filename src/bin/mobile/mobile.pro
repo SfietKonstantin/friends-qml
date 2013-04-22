@@ -15,7 +15,7 @@ DATA_FOLDER = $${SHAREDIR}/data
 
 DEFINES += 'MAIN_QML_FILE=\'\"$${QML_FOLDER}/main.qml\"\''
 !contains(MEEGO_EDITION, harmattan) {
-DEFINES += 'IMPORT_PATH=\'\"$$[QT_INSTALL_IMPORTS]"\''
+DEFINES += 'IMPORT_PATH=\'\"$${IMPORTSDIR}"\''
 }
 DEFINES += 'DATA_PATH=\'\"$${DATA_FOLDER}/\"\''
 

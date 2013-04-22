@@ -6,6 +6,12 @@ VERSION_MAJOR = 0
 VERSION_MINOR = 0
 VERSION_PATCH = 6
 
+!isEmpty(DEPLOYMENT_PREFIX) {
+    PREFIX=$${DEPLOYMENT_PREFIX}
+}
+
+message($$PREFIX)
+
 isEmpty(PREFIX) {
     PREFIX=/usr/
 }
@@ -24,7 +30,7 @@ isEmpty(SHAREDIR) {
     SHAREDIR = $${PREFIX}/share/$${NAME}
 }
 isEmpty(OPTDIR) {
-    OPTDIR = /opt/$${NAME}
+    OPTDIR = $${DEPLOYMENT_PREFIX}/opt/$${NAME}
 }
 isEmpty(IMPORTSDIR) {
     IMPORTSDIR = $${PREFIX}/lib/qt4/imports
