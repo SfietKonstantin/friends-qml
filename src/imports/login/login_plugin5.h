@@ -1,5 +1,5 @@
 /****************************************************************************************
- * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>                               *
+ * Copyright (C) 2011 Lucien XU <sfietkonstantin@free.fr>                               *
  *                                                                                      *
  * This program is free software; you can redistribute it and/or modify it under        *
  * the terms of the GNU General Public License as published by the Free Software        *
@@ -14,48 +14,33 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
-#include "me.h"
+#ifndef QFB_LOGIN_PLUGIN5_H
+#define QFB_LOGIN_PLUGIN5_H
 
-Me::Me(QObject *parent) :
-    QObject(parent)
-{
-}
+/**
+ * @internal
+ * @file login_plugin5.h
+ * @short Definition of LoginPlugin5 (Qt5)
+ */
 
-QString Me::identifier() const
-{
-    return m_identifier;
-}
+#include <QtQml/QQmlExtensionPlugin>
 
-QString Me::name() const
+/**
+ * @internal
+ * @short Login QML plugin for qfb (Qt5)
+ */
+class LoginPlugin5: public QQmlExtensionPlugin
 {
-    return m_name;
-}
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QQmlExtensionInterface/1.0")
+public:
+    /**
+     * @internal
+     * @short Register types
+     * @param uri uri used in the import.
+     */
+    void registerTypes(const char *uri);
+};
 
-QUrl Me::coverUrl() const
-{
-    return m_coverUrl;
-}
+#endif // QFB_LOGIN_PLUGIN5_H
 
-void Me::setIdentifier(const QString &identifier)
-{
-    if (m_identifier != identifier) {
-        m_identifier = identifier;
-        emit identifierChanged();
-    }
-}
-
-void Me::setName(const QString &name)
-{
-    if (m_name != name) {
-        m_name = name;
-        emit nameChanged();
-    }
-}
-
-void Me::setCoverUrl(const QUrl &coverUrl)
-{
-    if (m_coverUrl != coverUrl) {
-        m_coverUrl = coverUrl;
-        emit coverUrlChanged();
-    }
-}

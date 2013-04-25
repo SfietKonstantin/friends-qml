@@ -21,7 +21,7 @@
 #include <QtDeclarative/QDeclarativeEngine>
 #include <QtDeclarative/QDeclarativeView>
 
-//#include "userinfohelper.h"
+#include "userinfohelper.h"
 //#include "posthelper.h"
 //#include "mobilepostvalidator.h"
 //#include "querymanager.h"
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     Me me;
 //    PostUpdateRelay postUpdateRelay;
 
-//    qmlRegisterType<UserInfoHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBUserInfoHelper");
+    qmlRegisterType<UserInfoHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBUserInfoHelper");
 //    qmlRegisterType<PostHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBPostHelper");
 //    qmlRegisterType<MobilePostValidator>("org.SfietKonstantin.qfb.mobile", 4, 0,
 //                                         "QFBMobilePostValidator");

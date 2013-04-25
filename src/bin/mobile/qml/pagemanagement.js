@@ -14,8 +14,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
+
 function pop() {
-    _window_.pageStack.pop()
+    var oldPage = _window_.pageStack.pop()
+    var currentPage = _window_.pageStack.currentPage
+
+    if (currentPage.identifier != oldPage.identifier) {
+        _facebook_.previousNode()
+    }
+    currentPage.load()
 }
 
 function addPage(name, properties) {
@@ -23,20 +30,20 @@ function addPage(name, properties) {
     newPage.load()
 }
 
-function showPhotoViewer(model, index) {
-    var newPage = _window_.pageStack.push(Qt.resolvedUrl("PhotoViewerPage.qml"), {model: model})
-    newPage.setPosition(index)
-}
+//function showPhotoViewer(model, index) {
+//    var newPage = _window_.pageStack.push(Qt.resolvedUrl("PhotoViewerPage.qml"), {model: model})
+//    newPage.setPosition(index)
+//}
 
-function showFeedDialog(facebookId) {
-    _feed_dialog_.to = facebookId
-    _feed_dialog_.showDialog()
-}
+//function showFeedDialog(facebookId) {
+//    _feed_dialog_.to = facebookId
+//    _feed_dialog_.showDialog()
+//}
 
-function resolveType(facebookId, name) {
-    _type_resolver_.resolvedName = name
-    _type_resolver_.request(facebookId)
-}
+//function resolveType(facebookId, name) {
+//    _type_resolver_.resolvedName = name
+//    _type_resolver_.request(facebookId)
+//}
 
 function openWebBrowser(url) {
     Qt.openUrlExternally(url)

@@ -26,13 +26,20 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop()
+            onClicked: {
+                PageManagement.pop()
+            }
         }
     }
 
     function load() {
-        _facebook_.nodeIdentifier = "me"
+        if (_facebook_.nodeIdentifier != 0 && _facebook_.count != 0) {
+            return
+        }
+
+        _facebook_.nodeIdentifier = ME.identifier
         _facebook_.filters = [_friendsFilter_]
+        _facebook_.sorters = [_nameSorter_]
     }
 
     Item {
@@ -56,10 +63,11 @@ Page {
                 identifier: model.contentItem.identifier
                 name: model.contentItem.name
                 opacity: listView.opacityValue
-                onClicked: PageManagement.addPage("UserPage", {facebookId: model.data.facebookId,
-                                                               name: model.data.name})
+                onClicked: PageManagement.addPage("UserPage",
+                                                  {identifier: model.contentItem.identifier,
+                                                   name: model.contentItem.name})
             }
-            section.property: "name"
+            section.property: "section"
             section.criteria : ViewSection.FirstCharacter
             section.delegate: GroupIndicator {
                 text: section
@@ -84,7 +92,7 @@ Page {
             LoadingMessage {loading: _facebook_.status == Facebook.Busy}
 
             EmptyStateLabel {
-                visible: !_facebook_.status == Facebook.Idle && _facebook_.count == 0
+                visible: _facebook_.status == Facebook.Idle && _facebook_.count == 0
                 text: qsTr("No friends")
             }
         }

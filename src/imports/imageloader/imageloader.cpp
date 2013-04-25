@@ -174,16 +174,22 @@ ImageLoader::~ImageLoader()
 {
 }
 
-QUrl ImageLoader::pictureUrl(const QString &id, const QString &token)
+QUrl ImageLoader::pictureUrl(const QString &id, const QString &token, const QString &type)
 {
     QUrl url = QUrl(QString("https://graph.facebook.com/%1/picture").arg(id));
     url.addQueryItem("access_token", token);
+    if (!type.isEmpty()) {
+        url.addQueryItem("type", type);
+    }
     return url;
 }
 
 void ImageLoader::load(const QUrl &url)
 {
     Q_D(ImageLoader);
+    if (!url.isValid()) {
+        return;
+    }
 
     // Check the cache for existing image
     QDir dir (cacheFolderPath());

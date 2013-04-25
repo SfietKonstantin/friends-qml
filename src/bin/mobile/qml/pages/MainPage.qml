@@ -21,6 +21,9 @@ import "../pagemanagement.js" as PageManagement
 
 Page {
     id: container
+    function load() {
+
+    }
 
     tools: ToolBarLayout {
         Item {}
@@ -79,12 +82,12 @@ Page {
 //                            _window_.pageStack.push(newsPage)
                         } else if (model.action == "showMe") {
                             PageManagement.addPage("UserPage", {name: ME.name,
-                                                                facebookId: ME.facebookId})
+                                                                identifier: ME.identifier})
 
                         } else if (model.action == "showFriends") {
                             PageManagement.addPage("FriendListPage", {})
                         } else if (model.action == "showGroups") {
-                            PageManagement.addPage("GroupListPage", {})
+//                            PageManagement.addPage("GroupListPage", {})
                         }
                     }
                 }

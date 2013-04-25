@@ -23,24 +23,24 @@
 class Me : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString facebookId READ facebookId WRITE setFacebookId NOTIFY facebookIdChanged)
+    Q_PROPERTY(QString identifier READ identifier WRITE setIdentifier NOTIFY identifierChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QUrl coverUrl READ coverUrl WRITE setCoverUrl NOTIFY coverUrlChanged)
 public:
     explicit Me(QObject *parent = 0);
-    QString facebookId() const;
+    QString identifier() const;
     QString name() const;
     QUrl coverUrl() const;
 public slots:
-    void setFacebookId(const QString &facebookId);
+    void setIdentifier(const QString &identifier);
     void setName(const QString &name);
     void setCoverUrl(const QUrl &coverUrl);
 signals:
-    void facebookIdChanged();
+    void identifierChanged();
     void nameChanged();
     void coverUrlChanged();
 private:
-    QString m_facebookId;
+    QString m_identifier;
     QString m_name;
     QUrl m_coverUrl;
 };

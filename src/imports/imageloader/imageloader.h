@@ -11,7 +11,8 @@ class ImageLoader : public QObject
 public:
     explicit ImageLoader(QObject *parent = 0);
     virtual ~ImageLoader();
-    Q_INVOKABLE static QUrl pictureUrl(const QString &id, const QString &token);
+    Q_INVOKABLE static QUrl pictureUrl(const QString &id, const QString &token,
+                                       const QString &type = QString());
 public Q_SLOTS:
     void load(const QUrl &url);
 Q_SIGNALS:

@@ -20,11 +20,7 @@ DEFINES += 'IMPORT_PATH=\'\"$${IMPORTSDIR}"\''
 DEFINES += 'DATA_PATH=\'\"$${DATA_FOLDER}/\"\''
 
 INCLUDEPATH += ../../lib/login
-#INCLUDEPATH += ../../lib/base
-#INCLUDEPATH += ../../lib/baseimport
 LIBS += -L../../lib/login -l$${NAME}login
-#LIBS += -L../../lib/base -l$${NAME}
-#LIBS += -L../../lib/baseimport -l$${NAME}import
 
 # Friends specific
 HEADERS += clientidinterface.h
@@ -34,7 +30,7 @@ DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DATA_FOLDER}/libqfbmobile-clientidplugin.so\
 HEADERS +=      tokenmanager.h \
     networkaccessmanagerfactory.h \
     networkaccessmanager.h \
-#    userinfohelper.h \
+    userinfohelper.h \
 #    posthelper.h \
 #    mobilepostvalidator.h \
     me.h \
@@ -44,7 +40,7 @@ SOURCES +=      main.cpp \
                 tokenmanager.cpp \
     networkaccessmanagerfactory.cpp \
     networkaccessmanager.cpp \
-#    userinfohelper.cpp \
+    userinfohelper.cpp \
 #    posthelper.cpp \
 #    mobilepostvalidator.cpp \
     me.cpp \
@@ -72,7 +68,7 @@ QML_COMPONENTS +=   qml/components/Separator.qml \
 #                    qml/components/AlbumEntry.qml \
 #                    qml/components/PostTextArea.qml
 
-#QML_COMPOSITE +=    qml/composite/UserInfo.qml \
+QML_COMPOSITE +=    qml/composite/UserInfo.qml \
 #                    qml/composite/PostList.qml \
 #                    qml/composite/AlbumList.qml \
 #                    qml/composite/PhotoList.qml
@@ -89,8 +85,8 @@ QML_PAGES +=        qml/pages/MainPage.qml \
 #                    qml/pages/PhotoListPage.qml \
 #                    qml/pages/PhotoViewerPage.qml \
 #                    qml/pages/PostPage.qml \
-#                    qml/pages/UserPage.qml \
-#                    qml/pages/UserInfoPage.qml
+                    qml/pages/UserPage.qml \
+                    qml/pages/UserInfoPage.qml
 
 QML_DIALOGS +=      qml/dialogs/LoginSheet.qml \
 #                    qml/dialogs/FeedDialogSheet.qml
@@ -126,8 +122,8 @@ qmlRootFiles.files = $${QML_ROOT}
 qmlComponentsFiles.path = $${QML_FOLDER}/components
 qmlComponentsFiles.files = $${QML_COMPONENTS}
 
-#qmlCompositeFiles.path = $${QML_FOLDER}/composite
-#qmlCompositeFiles.files = $${QML_COMPOSITE}
+qmlCompositeFiles.path = $${QML_FOLDER}/composite
+qmlCompositeFiles.files = $${QML_COMPOSITE}
 
 qmlPagesFiles.path = $${QML_FOLDER}/pages
 qmlPagesFiles.files = $${QML_PAGES}
@@ -141,7 +137,7 @@ dataFiles.files = $${DATA_FILES}
 INSTALLS +=     target \
                 qmlRootFiles \
                 qmlComponentsFiles \
-#                qmlCompositeFiles \
+                qmlCompositeFiles \
                 qmlPagesFiles \
                 qmlDialogsFiles \
                 dataFiles

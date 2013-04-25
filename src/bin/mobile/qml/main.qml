@@ -109,6 +109,7 @@ PageStackWindow {
 
     Facebook {
         id: _facebook_
+        onStatusChanged: console.debug(status)
         onAccessTokenChanged: {
             if (accessToken != "") {
                 initialInfoLoader.getInitialInfo()
@@ -116,7 +117,8 @@ PageStackWindow {
         }
     }
 
-    EmptyFilter {id: _emptyFilter_}
+    NameSorter {id: _nameSorter_ }
+//    EmptyFilter {id: _emptyFilter_}
     ContentItemTypeFilter {id: _friendsFilter_; type: Facebook.User}
 
     QFBImageLoader {
@@ -128,10 +130,12 @@ PageStackWindow {
         property bool loading: false
         function getInitialInfo() {
             loading = true
-            _facebook_.filters = [_emptyFilter_]
+//            _facebook_.filters = [_emptyFilter_]
+            _facebook_.filters = []
+            _facebook_.sorters = []
             _facebook_.populate()
         }
-        function getCover() {
+        function setCover() {
             ME.coverUrl = _facebook_.node.cover.source
             loading = false
         }
@@ -143,8 +147,9 @@ PageStackWindow {
             if (_facebook_.node.type == Facebook.User) {
                 if (initialInfoLoader.loading) {
                     if (ME.name == "") {
+                        ME.identifier = _facebook_.node.identifier
                         ME.name = _facebook_.node.name
-                        _facebook_.node.coverChanged.connect(initialInfoLoader.getCover)
+                        _facebook_.node.coverChanged.connect(initialInfoLoader.setCover)
                         _facebook_.node.reload("cover")
                     }
                 }

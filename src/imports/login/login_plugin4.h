@@ -1,5 +1,5 @@
 /****************************************************************************************
- * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>                               *
+ * Copyright (C) 2011 Lucien XU <sfietkonstantin@free.fr>                               *
  *                                                                                      *
  * This program is free software; you can redistribute it and/or modify it under        *
  * the terms of the GNU General Public License as published by the Free Software        *
@@ -14,48 +14,33 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
-#include "me.h"
+#ifndef QFB_LOGIN_PLUGIN4_H
+#define QFB_LOGIN_PLUGIN4_H
 
-Me::Me(QObject *parent) :
-    QObject(parent)
-{
-}
+/**
+ * @internal
+ * @file login_plugin4.h
+ * @short Definition of LoginPlugin4 (Qt4)
+ */
 
-QString Me::identifier() const
-{
-    return m_identifier;
-}
+#include <QtDeclarative/QDeclarativeExtensionPlugin>
 
-QString Me::name() const
-{
-    return m_name;
-}
+/**
+ * @internal
+ * @short Login QML plugin for qfb (Qt4)
+ */
+class LoginPlugin4: public QDeclarativeExtensionPlugin
 
-QUrl Me::coverUrl() const
 {
-    return m_coverUrl;
-}
+    Q_OBJECT
+public:
+    /**
+     * @internal
+     * @short Register types
+     * @param uri uri used in the import.
+     */
+    void registerTypes(const char *uri);
+};
 
-void Me::setIdentifier(const QString &identifier)
-{
-    if (m_identifier != identifier) {
-        m_identifier = identifier;
-        emit identifierChanged();
-    }
-}
+#endif // QFB_LOGIN_PLUGIN4_H
 
-void Me::setName(const QString &name)
-{
-    if (m_name != name) {
-        m_name = name;
-        emit nameChanged();
-    }
-}
-
-void Me::setCoverUrl(const QUrl &coverUrl)
-{
-    if (m_coverUrl != coverUrl) {
-        m_coverUrl = coverUrl;
-        emit coverUrlChanged();
-    }
-}

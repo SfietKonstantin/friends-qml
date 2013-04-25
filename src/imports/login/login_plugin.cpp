@@ -1,5 +1,5 @@
 /****************************************************************************************
- * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>                               *
+ * Copyright (C) 2011 Lucien XU <sfietkonstantin@free.fr>                               *
  *                                                                                      *
  * This program is free software; you can redistribute it and/or modify it under        *
  * the terms of the GNU General Public License as published by the Free Software        *
@@ -14,48 +14,45 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
-#include "me.h"
+/**
+ * @internal
+ * @file login_plugin.cpp
+ * @short Implementation of LoginPlugin4 or LoginPlugin5
+ */
 
-Me::Me(QObject *parent) :
-    QObject(parent)
+#include <QtCore/QtGlobal>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#include "login_plugin4.h"
+#include <QtDeclarative/qdeclarative.h>
+#else
+#include "login_plugin5.h"
+#include <QtQml/qqml.h>
+#endif
+
+#include "loginmanager.h"
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+/**
+ * @internal
+ * @brief PLUGIN_VERSION_MAJOR
+ */
+static const int PLUGIN_VERSION_MAJOR = 4;
+
+void LoginPlugin4::registerTypes(const char *uri)
+#else
+/**
+ * @internal
+ * @brief PLUGIN_VERSION_MAJOR
+ */
+static const int PLUGIN_VERSION_MAJOR = 5;
+
+void LoginPlugin5::registerTypes(const char *uri)
+#endif
 {
+    // @uri org.SfietKonstantin.qfb.login
+    qmlRegisterType<QFB::LoginManager>(uri, PLUGIN_VERSION_MAJOR, 0, "QFBLoginManager");
 }
 
-QString Me::identifier() const
-{
-    return m_identifier;
-}
-
-QString Me::name() const
-{
-    return m_name;
-}
-
-QUrl Me::coverUrl() const
-{
-    return m_coverUrl;
-}
-
-void Me::setIdentifier(const QString &identifier)
-{
-    if (m_identifier != identifier) {
-        m_identifier = identifier;
-        emit identifierChanged();
-    }
-}
-
-void Me::setName(const QString &name)
-{
-    if (m_name != name) {
-        m_name = name;
-        emit nameChanged();
-    }
-}
-
-void Me::setCoverUrl(const QUrl &coverUrl)
-{
-    if (m_coverUrl != coverUrl) {
-        m_coverUrl = coverUrl;
-        emit coverUrlChanged();
-    }
-}
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+Q_EXPORT_PLUGIN2(qfbplugin, LoginPlugin4)
+#endif

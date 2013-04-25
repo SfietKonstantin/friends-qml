@@ -10,8 +10,6 @@ VERSION_PATCH = 6
     PREFIX=$${DEPLOYMENT_PREFIX}
 }
 
-message($$PREFIX)
-
 isEmpty(PREFIX) {
     PREFIX=/usr/
 }
