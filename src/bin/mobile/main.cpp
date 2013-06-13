@@ -107,9 +107,12 @@ int main(int argc, char **argv)
     }
 
     if (clientId.isEmpty()) {
-        // We use the test one
-        qDebug() << "Failed to find the client id";
-        return -1;
+        if (app.data()->arguments().count() == 2) {
+            clientId = app.data()->arguments().at(1);
+        } else {
+            qDebug() << "Failed to find the client id";
+            return -1;
+        }
     }
     view.rootContext()->setContextProperty("CLIENT_ID", clientId);
     // End Friends specific
