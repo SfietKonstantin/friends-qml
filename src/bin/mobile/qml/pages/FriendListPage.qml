@@ -21,8 +21,9 @@ import "../UiConstants.js" as Ui
 import "../pagemanagement.js" as PageManagement
 import "../components"
 
-Page {
+AbstractFacebookPage {
     id: container
+
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
@@ -32,15 +33,38 @@ Page {
         }
     }
 
-    function load() {
-        if (_facebook_.nodeIdentifier != 0 && _facebook_.count != 0) {
-            return
-        }
-
+    function load()  {
         _facebook_.nodeIdentifier = ME.identifier
         _facebook_.filters = [_friendsFilter_]
-        _facebook_.sorters = [_nameSorter_]
+        //_facebook_.sorters = [_nameSorter_]
+        _facebook_.populate()
     }
+
+//    function loadPop() {
+//        console.debug(listView.previousTopIndex)
+//        console.debug(listView.count)
+//        listView.positionViewAtEnd()
+//        listView.positionViewAtIndex(listView.previousTopIndex, ListView.Beginning)
+//        listView.contentY = listView.previousY
+
+//    }
+
+//    Connections {
+//        target: _facebook_
+//        onNodeChanged : {
+//            console.debug(listView.previousTopIndex)
+//            listView.positionViewAtIndex(listView.previousTopIndex, ListView.Contain)
+//            console.debug("changed")
+//        }
+//    }
+
+//        onStatusChanged: {
+//    onUpdateWhilePopped: {
+//            console.debug(container.beingPopped)
+//        if (_facebook_.status == Facebook.Idle && container.beingPopped) {
+//        }
+//    }
+//    }
 
     Item {
         anchors.fill: parent
@@ -55,29 +79,39 @@ Page {
         ListView {
             id: listView
             property double opacityValue: 0
+            property double previousTopIndex: 0
+            onCountChanged: {
+                positionViewAtIndex(previousTopIndex, ListView.Beginning)
+            }
+
             anchors.top: cover.bottom; anchors.bottom: parent.bottom
             anchors.left: parent.left; anchors.right: parent.right
+            highlightFollowsCurrentItem: true
             clip: true
             model: _facebook_
             delegate: FriendEntry {
                 identifier: model.contentItem.identifier
                 name: model.contentItem.name
                 opacity: listView.opacityValue
-                onClicked: PageManagement.addPage("UserPage",
-                                                  {identifier: model.contentItem.identifier,
-                                                   name: model.contentItem.name})
+                onClicked: {
+                    PageManagement.addPage("UserPage", {identifier: model.contentItem.identifier,
+                                                        name: model.contentItem.name})
+                    listView.previousTopIndex = listView.indexAt(listView.width / 2,
+                                                                 listView.contentY)
+                }
             }
             section.property: "section"
             section.criteria : ViewSection.FirstCharacter
             section.delegate: GroupIndicator {
                 text: section
+                opacity: listView.opacityValue
             }
 
             ScrollDecorator {flickableItem: parent}
             cacheBuffer: Ui.LIST_ITEM_HEIGHT_DEFAULT * 5
             states: [
                 State {
-                    name: "loaded"; when: _facebook_.status == Facebook.Idle
+                    name: "loaded"; when: !container.loading
                     PropertyChanges {
                         target: listView
                         opacityValue: 1
@@ -89,10 +123,10 @@ Page {
                 NumberAnimation { duration: Ui.ANIMATION_DURATION_FAST }
             }
 
-            LoadingMessage {loading: _facebook_.status == Facebook.Busy}
+            LoadingMessage {loading: container.loading}
 
             EmptyStateLabel {
-                visible: _facebook_.status == Facebook.Idle && _facebook_.count == 0
+                visible: !container.loading && _facebook_.count == 0
                 text: qsTr("No friends")
             }
         }

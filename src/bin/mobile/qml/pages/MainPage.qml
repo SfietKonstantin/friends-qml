@@ -19,11 +19,10 @@ import com.nokia.meego 1.0
 import "../components"
 import "../pagemanagement.js" as PageManagement
 
-Page {
+AbstractFacebookPage {
     id: container
-    function load() {
-
-    }
+    function load() {}
+    function loadPop() {}
 
     tools: ToolBarLayout {
         Item {}
@@ -81,8 +80,9 @@ Page {
 //                            newsPage.load()
 //                            _window_.pageStack.push(newsPage)
                         } else if (model.action == "showMe") {
-                            PageManagement.addPage("UserPage", {name: ME.name,
-                                                                identifier: ME.identifier})
+                            PageManagement.simpleAddPageAndLoad("UserPage", {name: ME.name,
+                                                                      identifier: ME.identifier,
+                                                                      needPop: false})
 
                         } else if (model.action == "showFriends") {
                             PageManagement.addPage("FriendListPage", {})
@@ -107,7 +107,11 @@ Page {
         MenuLayout {
             MenuItem {
                 text: qsTr("About Friends")
-                onClicked: PageManagement.addPage("AboutPage", {})
+                onClicked: PageManagement.simpleAddPage("AboutPage", {})
+            }
+            MenuItem {
+                text: qsTr("Quit")
+                onClicked: Qt.quit()
             }
         }
     }

@@ -3,7 +3,7 @@ include(../../globals.pri)
 TEMPLATE = app
 TARGET = $${NAME}-mobile
 
-QT = core gui network declarative
+QT = core gui network declarative opengl
 
 contains(CONFIG, optify) {
 QML_FOLDER = $${OPTDIR}/qml
@@ -27,7 +27,7 @@ HEADERS += clientidinterface.h
 DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DATA_FOLDER}/libqfbmobile-clientidplugin.so\"\''
 # End Friends specific
 
-HEADERS +=      tokenmanager.h \
+HEADERS +=      ../shared/tokenmanager.h \
     networkaccessmanagerfactory.h \
     networkaccessmanager.h \
     userinfohelper.h \
@@ -35,9 +35,11 @@ HEADERS +=      tokenmanager.h \
 #    mobilepostvalidator.h \
     me.h \
 #    postupdaterelay.h
+    pagepixmapprovider.h #\
+#    backpixmapitem.h
 
 SOURCES +=      main.cpp \
-                tokenmanager.cpp \
+                ../shared/tokenmanager.cpp \
     networkaccessmanagerfactory.cpp \
     networkaccessmanager.cpp \
     userinfohelper.cpp \
@@ -45,6 +47,8 @@ SOURCES +=      main.cpp \
 #    mobilepostvalidator.cpp \
     me.cpp \
 #    postupdaterelay.cpp
+    pagepixmapprovider.cpp #\
+#    backpixmapitem.cpp
 
 QML_ROOT +=         qml/main.qml \
                     qml/UiConstants.js \
@@ -63,9 +67,10 @@ QML_COMPONENTS +=   qml/components/Separator.qml \
 #                    qml/components/GroupBookmarkEntry.qml \
 #                    qml/components/CommentEntry.qml \
                     qml/components/Cover.qml \
+                    qml/components/UserCover.qml \
                     qml/components/Container.qml \
 #                    qml/components/Post.qml \
-#                    qml/components/AlbumEntry.qml \
+                    qml/components/AlbumEntry.qml \
 #                    qml/components/PostTextArea.qml
 
 QML_COMPOSITE +=    qml/composite/UserInfo.qml \
@@ -74,15 +79,16 @@ QML_COMPOSITE +=    qml/composite/UserInfo.qml \
 #                    qml/composite/PhotoList.qml
 
 QML_PAGES +=        qml/pages/MainPage.qml \
+                    qml/pages/AbstractFacebookPage.qml \
                     qml/pages/AboutPage.qml \
                     qml/pages/DevelopersPage.qml \
 #                    qml/pages/NewsPage.qml \
-#                    qml/pages/AlbumListPage.qml \
+                    qml/pages/AlbumListPage.qml \
                     qml/pages/FriendListPage.qml \
 #                    qml/pages/GroupPage.qml \
 #                    qml/pages/GroupListPage.qml \
 #                    qml/pages/LikesPage.qml \
-#                    qml/pages/PhotoListPage.qml \
+                    qml/pages/PhotoListPage.qml \
 #                    qml/pages/PhotoViewerPage.qml \
 #                    qml/pages/PostPage.qml \
                     qml/pages/UserPage.qml \
@@ -100,7 +106,9 @@ DATA_FILES +=       data/friends.png \
                     data/unlike-black.png \
                     data/unlike-white.png \
                     data/sfiet_konstantin.jpg \
-                    data/aniket.jpg
+                    data/aniket.jpg \
+                    data/w00t.jpg \
+                    data/zchydem.jpg
 
 OTHER_FILES +=      $${QML_ROOT} \
                     $${QML_COMPONENTS} \

@@ -448,7 +448,6 @@ redirect_uri=https://www.facebook.com/connect/login_success.html&scope=%3&respon
 void LoginManager::checkUrl(const QUrl &url)
 {
     Q_D(LoginManager);
-
     QString urlToString = url.toString();
     // Check if the URL is not good
     if (!urlToString.contains(d->clientId)) {
@@ -459,7 +458,6 @@ void LoginManager::checkUrl(const QUrl &url)
                 QString token = tokenRegExp.cap(1);
 
                 qDebug() << "Login succeded";
-                qDebug() << "Token:" << token;
                 emit loginSucceeded(token);
                 return;
             } else {

@@ -28,20 +28,57 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop()
+            onClicked: PageManagement.simplePop()
         }
     }
 
     ListModel {
         id: model
         ListElement {
+            //icon: "chriadam.jpg"
+            icon: ""
+            category: "Developers of Nemo Social QML plugin"
+            name: "Chris Adams"
+            nickname: "chriadam"
+            description: "Lead developer"
+            twitter: ""
+            website: "https://github.com/chriadam"
+        }
+        ListElement {
+            icon: "w00t.jpg"
+            category: "Developers of Nemo Social QML plugin"
+            name: "Robin Burchell"
+            nickname: "w00t"
+            description: "Maintainer of Nemo QML plugins"
+            twitter: "https://twitter.com/w00teh"
+            website: "https://github.com/rburchell"
+        }
+        ListElement {
+            icon: "zchydem.jpg"
+            category: "Developers of Nemo Social QML plugin"
+            name: "Marko Mattila"
+            nickname: "zchydem"
+            description: "Contributor"
+            twitter: "https://twitter.com/zchydem"
+            website: "https://github.com/zchydem"
+        }
+        ListElement {
             icon: "sfiet_konstantin.jpg"
-            category: "Main developer"
-            name: "Lucien XU"
+            category: "Developers of Nemo Social QML plugin"
+            name: "Lucien Xu"
+            nickname: "Sfiet_Konstantin"
+            description: "Contributor"
+            twitter: "https://twitter.com/SfietKonstantin"
+            website: "https://github.com/SfietKonstantin"
+        }
+        ListElement {
+            icon: "sfiet_konstantin.jpg"
+            category: "Developers of Friends"
+            name: "Lucien Xu"
             nickname: "Sfiet_Konstantin"
             description: "Main developer"
             twitter: "https://twitter.com/SfietKonstantin"
-            website: ""
+            website: "https://github.com/SfietKonstantin"
         }
         ListElement {
             icon: "aniket.jpg"
@@ -83,7 +120,8 @@ Page {
                 width: Ui.ICON_SIZE_XLARGE; height: Ui.ICON_SIZE_XLARGE
                 anchors.left: parent.left; anchors.leftMargin: Ui.MARGIN_DEFAULT
                 anchors.verticalCenter: parent.verticalCenter
-                source: model.icon != "" ? DATA_PATH + model.icon : ""
+                source: model.icon != "" ? DATA_PATH + model.icon
+                                         : "image://theme/icon-m-telephony-contact-avatar"
             }
 
             Column {
@@ -102,6 +140,7 @@ Page {
 
                 Row {
                     Button {
+                        visible: model.twitter != ""
                         iconSource: "image://theme/icon-s-service-twitter"
                         platformStyle: ButtonStyle {
                             buttonWidth: 51
@@ -109,10 +148,18 @@ Page {
                         }
                         onClicked: Qt.openUrlExternally(model.twitter)
                     }
+
+                    Button {
+                        visible: model.website != ""
+                        iconSource: "image://theme/icon-l-browser-main-view"
+                        platformStyle: ButtonStyle {
+                            buttonWidth: 51
+                            buttonHeight: 51
+                        }
+                        onClicked: Qt.openUrlExternally(model.website)
+                    }
                 }
             }
-
-
         }
     }
 

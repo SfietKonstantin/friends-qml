@@ -28,6 +28,19 @@ import "pagemanagement.js" as PageManagement
 PageStackWindow {
     id: _window_
     initialPage: mainPage
+//    property bool popping: false
+
+    Connections {
+        target: _window_.pageStack
+//        onBusyChanged: {
+//            if (!_window_.pageStack.busy) {
+//                if (_window_.popping) {
+//                    _window_.popping = false
+//                    _facebook_.previousNode()
+//                }
+//            }
+//        }
+    }
 
     Component.onCompleted: {
         LOGIN_MANAGER.clientId = CLIENT_ID
@@ -109,7 +122,6 @@ PageStackWindow {
 
     Facebook {
         id: _facebook_
-        onStatusChanged: console.debug(status)
         onAccessTokenChanged: {
             if (accessToken != "") {
                 initialInfoLoader.getInitialInfo()
@@ -117,9 +129,10 @@ PageStackWindow {
         }
     }
 
-    NameSorter {id: _nameSorter_ }
-//    EmptyFilter {id: _emptyFilter_}
+    //NameSorter {id: _nameSorter_ }
     ContentItemTypeFilter {id: _friendsFilter_; type: Facebook.User}
+    ContentItemTypeFilter {id: _albumsFilter_; type: Facebook.Album}
+    ContentItemTypeFilter {id: _photosFilter_; type: Facebook.Photo}
 
     QFBImageLoader {
         id: _imageLoader_
@@ -130,10 +143,11 @@ PageStackWindow {
         property bool loading: false
         function getInitialInfo() {
             loading = true
-//            _facebook_.filters = [_emptyFilter_]
+            _facebook_.nodeIdentifier = "me"
             _facebook_.filters = []
             _facebook_.sorters = []
             _facebook_.populate()
+            _facebook_.nextNode()
         }
         function setCover() {
             ME.coverUrl = _facebook_.node.cover.source
@@ -143,19 +157,31 @@ PageStackWindow {
 
     Connections {
         target: _facebook_
-        onNodeChanged: {
-            if (_facebook_.node.type == Facebook.User) {
-                if (initialInfoLoader.loading) {
-                    if (ME.name == "") {
-                        ME.identifier = _facebook_.node.identifier
-                        ME.name = _facebook_.node.name
-                        _facebook_.node.coverChanged.connect(initialInfoLoader.setCover)
-                        _facebook_.node.reload("cover")
-                    }
-                }
+        onStatusChanged: {
+            if (initialInfoLoader.loading && _facebook_.node != null) {
+                ME.identifier = _facebook_.node.identifier
+                ME.name = _facebook_.node.name
+                _facebook_.node.coverChanged.connect(initialInfoLoader.setCover)
+                _facebook_.node.reload("cover")
             }
         }
     }
+
+//    Connections {
+//        target: _facebook_
+//        onNodeChanged: {
+//            if (_facebook_.node.type == Facebook.User) {
+//                if (initialInfoLoader.loading) {
+//                    if (ME.name == "") {
+//                        ME.identifier = _facebook_.node.identifier
+//                        ME.name = _facebook_.node.name
+//                        _facebook_.node.coverChanged.connect(initialInfoLoader.setCover)
+//                        _facebook_.node.reload("cover")
+//                    }
+//                }
+//            }
+//        }
+//    }
 //    QFBTypeLoader {
 //        id: _type_resolver_
 //        queryManager: QUERY_MANAGER

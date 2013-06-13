@@ -23,19 +23,19 @@ import "../pagemanagement.js" as PageManagement
 //import "../composite"
 import "../components"
 
-Page {
+AbstractFacebookPage {
     id: container
     property string identifier
     property string name
     property bool needPop: true
     function load() {
-        _imageLoader_.load(_imageLoader_.pictureUrl(container.identifier, _facebook_.accessToken,
-                                                    "large"))
+        cover.load()
+//        _imageLoader_.load(_imageLoader_.pictureUrl(container.identifier, _facebook_.accessToken,
+//                                                    "large"))
 
         if (identifier == _facebook_.node.identifier) {
             if (_facebook_.node.cover.source != "") {
                 cover.coverUrl = _facebook_.node.cover.source
-                container.needPop = false
             } else {
                 _facebook_.node.coverChanged.connect(container.setCover)
                 _facebook_.node.reload("cover")
@@ -71,16 +71,17 @@ Page {
             iconId: "toolbar-back"
             onClicked: {
                 if (container.needPop) {
-                    _facebook_.previousNode()
+                    PageManagement.pop()
+                } else {
+                    PageManagement.simplePop()
                 }
-                PageManagement.pop()
             }
         }
 
-        ToolButton {
-            text: qsTr("Post something")
-            onClicked: PageManagement.showFeedDialog(container.facebookId)
-        }
+//        ToolButton {
+//            text: qsTr("Post something")
+//            onClicked: PageManagement.showFeedDialog(container.facebookId)
+//        }
 
         ToolIcon {
             iconId: "toolbar-view-menu"
@@ -94,36 +95,37 @@ Page {
             MenuItem {
                 text: container.facebookId == ME.facebookId ? qsTr("Personnal informations")
                                                             : qsTr("User informations")
-                onClicked: PageManagement.addPage("UserInfoPage", {identifier: container.identifier,
-                                                                   name: container.name,
-                                                                   coverUrl: cover.coverUrl})
+                onClicked: PageManagement.simpleAddPageAndLoad("UserInfoPage",
+                                                               {identifier: container.identifier,
+                                                                name: container.name,
+                                                                coverUrl: cover.coverUrl})
             }
             MenuItem {
                 text: qsTr("Albums")
                 onClicked: PageManagement.addPage("AlbumListPage",
-                                                  {facebookId: container.facebookId,
+                                                  {identifier: container.identifier,
                                                    name: container.name,
                                                    coverUrl: cover.coverUrl})
             }
-            MenuItem {
-                text: qsTr("Photos")
-                onClicked: PageManagement.addPage("PhotoListPage",
-                                                  {facebookId: container.facebookId,
-                                                   name: container.name,
-                                                   coverUrl: cover.coverUrl})
-            }
+//            MenuItem {
+//                text: qsTr("Photos")
+//                onClicked: PageManagement.addPage("PhotoListPage",
+//                                                  {identifier: container.identifier,
+//                                                   name: container.name,
+//                                                   coverUrl: cover.coverUrl})
+//            }
         }
     }
 
-    Connections {
-        target: _imageLoader_
-        onLoaded: {
-            if (url == _imageLoader_.pictureUrl(container.identifier,_facebook_.accessToken,
-                                                "large")) {
-                portrait.source = path
-            }
-        }
-    }
+//    Connections {
+//        target: _imageLoader_
+//        onLoaded: {
+//            if (url == _imageLoader_.pictureUrl(container.identifier,_facebook_.accessToken,
+//                                                "large")) {
+//                portrait.source = path
+//            }
+//        }
+//    }
 
     ScrollDecorator { flickableItem: flickable }
     Flickable {
@@ -133,46 +135,52 @@ Page {
         contentHeight: cover.height + postList.height + Ui.MARGIN_DEFAULT
 
 
-        Cover {
+//        Cover {
+//            id: cover
+//            name: container.name
+//            large: true
+//        }
+
+        UserCover {
             id: cover
+            identifier: container.identifier
             name: container.name
-            large: true
         }
 
-        Rectangle {
-            id: portraitContainer
-            opacity: 0
-            anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT
-            anchors.top: cover.top; anchors.topMargin: Ui.MARGIN_DEFAULT
-            width: portrait.width + 2 * Ui.MARGIN_XSMALL
-            height: Math.min(portrait.height + 2 * Ui.MARGIN_XSMALL,
-                             cover.height - 2 * Ui.MARGIN_DEFAULT)
-            color: "white"
+//        Rectangle {
+//            id: portraitContainer
+//            opacity: 0
+//            anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT
+//            anchors.top: cover.top; anchors.topMargin: Ui.MARGIN_DEFAULT
+//            width: portrait.width + 2 * Ui.MARGIN_XSMALL
+//            height: Math.min(portrait.height + 2 * Ui.MARGIN_XSMALL,
+//                             cover.height - 2 * Ui.MARGIN_DEFAULT)
+//            color: "white"
 
-            Item {
-                anchors.fill: parent
-                anchors.margins: Ui.MARGIN_XSMALL
-                clip: true
+//            Item {
+//                anchors.fill: parent
+//                anchors.margins: Ui.MARGIN_XSMALL
+//                clip: true
 
-                Image {
-                    id: portrait
-                    anchors.top: parent.top
-                }
-            }
+//                Image {
+//                    id: portrait
+//                    anchors.top: parent.top
+//                }
+//            }
 
-            states: [
-                State {
-                    name: "visible"; when: portrait.status == Image.Ready
-                    PropertyChanges {
-                        target: portraitContainer
-                        opacity: 1
-                    }
-                }
-            ]
-            Behavior on opacity {
-                NumberAnimation {duration: Ui.ANIMATION_DURATION_NORMAL}
-            }
-        }
+//            states: [
+//                State {
+//                    name: "visible"; when: portrait.status == Image.Ready
+//                    PropertyChanges {
+//                        target: portraitContainer
+//                        opacity: 1
+//                    }
+//                }
+//            ]
+//            Behavior on opacity {
+//                NumberAnimation {duration: Ui.ANIMATION_DURATION_NORMAL}
+//            }
+//        }
 
 //        PostList {
 //            id: postList

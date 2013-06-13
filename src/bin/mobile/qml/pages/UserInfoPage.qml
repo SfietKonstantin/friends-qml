@@ -17,6 +17,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import org.nemomobile.social 1.0
+import org.SfietKonstantin.qfb.mobile 4.0
 import "../UiConstants.js" as Ui
 import "../pagemanagement.js" as PageManagement
 import "../components"
@@ -27,8 +28,23 @@ Page {
     property string identifier
     property string name
     property string coverUrl
+
+    function setGender() {
+        switch (_facebook_.node.gender) {
+        case FacebookUser.Male:
+            userInfo.gender = QFBUserInfoHelper.Male
+            break;
+        case FacebookUser.Female:
+            userInfo.gender = QFBUserInfoHelper.Female
+            break;
+        default:
+            userInfo.gender = QFBUserInfoHelper.Unknown
+            break;
+        }
+    }
+
     function load() {
-        userInfo.gender = _facebook_.node.gender
+        setGender()
         _facebook_.node.reload("gender,birthday,religion,political,bio,quotes")
         _facebook_.node.genderChanged.connect(userInfo.manageGender)
         _facebook_.node.birthdayChanged.connect(userInfo.manageBirthday)
@@ -41,7 +57,7 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop()
+            onClicked: PageManagement.simplePop()
         }
     }
 
@@ -70,7 +86,7 @@ Page {
             UserInfo {
                 id: userInfo
                 function manageGender() {
-                    userInfo.gender = _facebook_.node.gender
+                    setGender()
                 }
                 function manageBirthday() {
                     userInfo.birthday = _facebook_.node.birthday

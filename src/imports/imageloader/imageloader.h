@@ -13,6 +13,8 @@ public:
     virtual ~ImageLoader();
     Q_INVOKABLE static QUrl pictureUrl(const QString &id, const QString &token,
                                        const QString &type = QString());
+    Q_INVOKABLE static QUrl pictureUrl(const QString &id, const QString &token,
+                                       int width, int height);
 public Q_SLOTS:
     void load(const QUrl &url);
 Q_SIGNALS:

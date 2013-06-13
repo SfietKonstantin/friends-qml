@@ -14,20 +14,45 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
+function simplePop() {
+    _window_.pageStack.pop()
+}
+
+function simpleAddPage(name, properties) {
+    _window_.pageStack.push(Qt.resolvedUrl(name + ".qml"), properties)
+}
+
+function simpleAddPageAndLoad(name, properties) {
+    var page = _window_.pageStack.push(Qt.resolvedUrl(name + ".qml"), properties)
+    page.load()
+}
 
 function pop() {
     var oldPage = _window_.pageStack.pop()
     var currentPage = _window_.pageStack.currentPage
 
-    if (currentPage.identifier != oldPage.identifier) {
-        _facebook_.previousNode()
-    }
-    currentPage.load()
+//    console.debug("Current page: " + currentPage.identifier
+//                  + " old page: " + oldPage.identifier)
+//    if (currentPage.identifier != oldPage.identifier && currentPage.identifier != null) {
+//        _facebook_.previousNode()
+//    }
+    currentPage.beingPopped = true
+//    currentPage.loadPop()
+    //_window_.state = "popping"
+    //_facebook_.previousNode()
+    oldPage.displayPixmap()
+//    _window_.popping = true
+    _facebook_.previousNode()
+
+
 }
 
 function addPage(name, properties) {
+    //_window_.state = "pushing"
     var newPage = _window_.pageStack.push(Qt.resolvedUrl(name + ".qml"), properties)
     newPage.load()
+    newPage.beingPushed = true
+    //_facebook_.nextNode()
 }
 
 //function showPhotoViewer(model, index) {

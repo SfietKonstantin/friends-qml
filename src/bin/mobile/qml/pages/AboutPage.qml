@@ -27,7 +27,7 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop()
+            onClicked: PageManagement.simplePop()
         }
     }
 
@@ -67,8 +67,8 @@ Page {
         anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT
         text: qsTr("Friends is a Facebook client that tries to provide the best experience for \
 the user. It is an Open Source software, meaning that it can me modified and enhanced by \
-anybody. If you like Friends, please consider a donation for supporting the developers. \
-This donation will help maintaining the software, and keeping it status of Open Source software.")
+anybody. If you like Friends, please consider a donation. It will help maintaining the software, \
+and keeping it status of Open Source software.")
     }
 
 
@@ -92,7 +92,7 @@ This donation will help maintaining the software, and keeping it status of Open 
         Button {
             iconSource: DATA_PATH + "developers.png"
             text: qsTr("Developers")
-            onClicked: PageManagement.addPage("DevelopersPage", {})
+            onClicked: PageManagement.simpleAddPage("DevelopersPage", {})
         }
     }
 }

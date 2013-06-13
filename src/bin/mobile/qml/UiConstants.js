@@ -30,6 +30,7 @@ var MARGIN_XSMALL               = 4
 var BANNER_HEIGHT_LARGE         = 250
 var BANNER_HEIGHT_PORTRAIT      = 72
 var BANNER_HEIGHT_LANDSCAPE     = 46
+var BANNER_PORTRAIT             = 150
 
 // Icons
 var ICON_SIZE_XLARGE            = 80

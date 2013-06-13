@@ -184,6 +184,15 @@ QUrl ImageLoader::pictureUrl(const QString &id, const QString &token, const QStr
     return url;
 }
 
+QUrl ImageLoader::pictureUrl(const QString &id, const QString &token, int width, int height)
+{
+    QUrl url = QUrl(QString("https://graph.facebook.com/%1/picture").arg(id));
+    url.addQueryItem("access_token", token);
+    url.addQueryItem("width", QString::number(width));
+    url.addQueryItem("height", QString::number(height));
+    return url;
+}
+
 void ImageLoader::load(const QUrl &url)
 {
     Q_D(ImageLoader);

@@ -26,9 +26,11 @@
 //#include "mobilepostvalidator.h"
 //#include "querymanager.h"
 #include "loginmanager.h"
-#include "tokenmanager.h"
+#include "../shared/tokenmanager.h"
 #include "networkaccessmanagerfactory.h"
 #include "me.h"
+#include "pagepixmapprovider.h"
+//#include "backpixmapitem.h"
 //#include "postupdaterelay.h"
 
 // Friends specific
@@ -36,6 +38,8 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QDebug>
 // End Friends specific
+#include <QtOpenGL/QGLFormat>
+#include <QtOpenGL/QGLWidget>
 
 static const char *FACEBOOK_PAGE = "https://m.facebook.com/friendsforn9";
 static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&\
@@ -54,14 +58,29 @@ int main(int argc, char **argv)
 //    PostUpdateRelay postUpdateRelay;
 
     qmlRegisterType<UserInfoHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBUserInfoHelper");
+//    qmlRegisterType<BackPixmapItem>("org.SfietKonstantin.qfb.mobile", 4, 0,
+//                                    "QFBBackPixmapItem");
 //    qmlRegisterType<PostHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBPostHelper");
 //    qmlRegisterType<MobilePostValidator>("org.SfietKonstantin.qfb.mobile", 4, 0,
 //                                         "QFBMobilePostValidator");
 
     QDeclarativeView view;
+#ifdef MEEGO_EDITION_HARMATTAN
+    QGLFormat format = QGLFormat::defaultFormat();
+    format.setSampleBuffers(false);
+    format.setSwapInterval(1);
+    QGLWidget* glWidget = new QGLWidget(format);
+    glWidget->setAutoFillBackground(false);
+    view.setViewport(glWidget);
+    PagePixmapProvider *pagePixmapProvider = new PagePixmapProvider(glWidget);
+#else
+    PagePixmapProvider *pagePixmapProvider = new PagePixmapProvider(&view);
+#endif
+
 #ifndef MEEGO_EDITION_HARMATTAN
     view.engine()->addImportPath(IMPORT_PATH);
 #endif
+    view.engine()->addImageProvider("pagepixmapprovider", pagePixmapProvider);
     view.engine()->setNetworkAccessManagerFactory(new NetworkAccessManagerFactory());
 //    view.rootContext()->setContextProperty("QUERY_MANAGER", &queryManager);
     view.rootContext()->setContextProperty("LOGIN_MANAGER", &loginManager);
@@ -85,6 +104,12 @@ int main(int argc, char **argv)
             clientId = castedPlugin->clientId();
             qDebug() << "Client id loaded";
         }
+    }
+
+    if (clientId.isEmpty()) {
+        // We use the test one
+        qDebug() << "Failed to find the client id";
+        return -1;
     }
     view.rootContext()->setContextProperty("CLIENT_ID", clientId);
     // End Friends specific
