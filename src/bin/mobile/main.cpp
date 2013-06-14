@@ -28,7 +28,7 @@
 #include "loginmanager.h"
 #include "../shared/tokenmanager.h"
 #include "networkaccessmanagerfactory.h"
-#include "me.h"
+#include "../shared/me.h"
 #include "pagepixmapprovider.h"
 //#include "backpixmapitem.h"
 //#include "postupdaterelay.h"
@@ -107,8 +107,8 @@ int main(int argc, char **argv)
     }
 
     if (clientId.isEmpty()) {
-        if (app.data()->arguments().count() == 2) {
-            clientId = app.data()->arguments().at(1);
+        if (app.arguments().count() == 2) {
+            clientId = app.arguments().at(1);
         } else {
             qDebug() << "Failed to find the client id";
             return -1;

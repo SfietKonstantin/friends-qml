@@ -28,24 +28,24 @@ DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DATA_FOLDER}/libqfbmobile-clientidplugin.so\
 # End Friends specific
 
 HEADERS +=      ../shared/tokenmanager.h \
+                ../shared/me.h \
     networkaccessmanagerfactory.h \
     networkaccessmanager.h \
     userinfohelper.h \
 #    posthelper.h \
 #    mobilepostvalidator.h \
-    me.h \
 #    postupdaterelay.h
     pagepixmapprovider.h #\
 #    backpixmapitem.h
 
 SOURCES +=      main.cpp \
                 ../shared/tokenmanager.cpp \
+                ../shared/me.cpp \
     networkaccessmanagerfactory.cpp \
     networkaccessmanager.cpp \
     userinfohelper.cpp \
 #    posthelper.cpp \
 #    mobilepostvalidator.cpp \
-    me.cpp \
 #    postupdaterelay.cpp
     pagepixmapprovider.cpp #\
 #    backpixmapitem.cpp
