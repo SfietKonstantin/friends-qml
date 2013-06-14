@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 
 !contains(CONFIG, nolib): SUBDIRS += nemo-qml-plugin-social
-SUBDIRS = src
+SUBDIRS += src
 
 OTHER_FILES += \
     qtc_packaging/debian_harmattan/rules \
