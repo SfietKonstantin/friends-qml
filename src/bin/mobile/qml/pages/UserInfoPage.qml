@@ -104,7 +104,6 @@ Page {
                     userInfo.quotes = _facebook_.node.quotes
                 }
 
-
                 anchors.top: parent.top; anchors.topMargin: Ui.MARGIN_DEFAULT
             }
         }

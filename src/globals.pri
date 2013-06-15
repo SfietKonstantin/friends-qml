@@ -1,5 +1,6 @@
 # name
 NAME = qfb
+APPNAME = friends-qml
 
 # version
 VERSION_MAJOR = 0

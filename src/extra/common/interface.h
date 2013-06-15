@@ -1,5 +1,5 @@
 /****************************************************************************************
- * Copyright (C) 2011 Lucien XU <sfietkonstantin@free.fr>                               *
+ * Copyright (C) 2013 Lucien XU <sfietkonstantin@free.fr>                               *
  *                                                                                      *
  * This program is free software; you can redistribute it and/or modify it under        *
  * the terms of the GNU General Public License as published by the Free Software        *
@@ -14,34 +14,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
-import QtQuick 1.1
-import "UiConstants.js" as Ui
+#include <QtCore/QtPlugin>
 
-Image {
-    id: image
-    onSourceChanged: console.debug(source)
-    property string url
-    smooth: true
-    asynchronous: true
-    opacity: 0
-    states: State {
-        name: "visible"; when: image.status == Image.Ready
-        PropertyChanges {
-            target: image
-            opacity: 1
-        }
-    }
-    Behavior on opacity {
-        NumberAnimation {duration: Ui.ANIMATION_DURATION_FAST}
-    }
 
-    Connections {
-        target: _imageLoader_
-        onLoaded: {
-            if (url == image.url) {
-                image.source = path
-            }
-        }
-    }
-}
+class Interface
+{
+public:
+    virtual ~Interface() {}
+    virtual QString clientId() const = 0;
+};
+
+Q_DECLARE_INTERFACE(Interface, "org.SfietKonstantin.qfb/1.0")
+
+#endif // INTERFACE_H

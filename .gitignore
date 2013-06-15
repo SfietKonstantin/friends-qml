@@ -3,7 +3,7 @@
 build
 install
 qtc_packaging
-src/extra
+src/extra/clientid-plugin
 
 # Other files
 autoobs.sh

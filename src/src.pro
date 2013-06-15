@@ -1,3 +1,3 @@
 TEMPLATE = subdirs
-SUBDIRS = lib imports bin
+SUBDIRS = lib imports extra bin
 CONFIG += ordered

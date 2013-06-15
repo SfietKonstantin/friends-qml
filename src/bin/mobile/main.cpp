@@ -34,7 +34,7 @@
 //#include "postupdaterelay.h"
 
 // Friends specific
-#include "clientidinterface.h"
+#include "interface.h"
 #include <QtCore/QPluginLoader>
 #include <QtCore/QDebug>
 // End Friends specific

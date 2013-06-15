@@ -1,7 +1,7 @@
 include(../../globals.pri)
 
 TEMPLATE = app
-TARGET = $${NAME}-mobile
+TARGET = $${APPNAME}-harmattan
 
 QT = core gui network declarative opengl
 
@@ -23,31 +23,33 @@ INCLUDEPATH += ../../lib/login
 LIBS += -L../../lib/login -l$${NAME}login
 
 # Friends specific
-HEADERS += clientidinterface.h
-DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DATA_FOLDER}/libqfbmobile-clientidplugin.so\"\''
+INCLUDEPATH += ../../extra/common
+DEFINES += 'CLIENT_ID_PLUGIN=\'\"$${DATA_FOLDER}/libfriends-qml-clientidplugin.so\"\''
 # End Friends specific
 
 HEADERS +=      ../shared/tokenmanager.h \
                 ../shared/me.h \
-    networkaccessmanagerfactory.h \
-    networkaccessmanager.h \
-    userinfohelper.h \
+                pagepixmapprovider.h \
+                networkaccessmanagerfactory.h \
+                networkaccessmanager.h \
+                userinfohelper.h \
 #    posthelper.h \
 #    mobilepostvalidator.h \
 #    postupdaterelay.h
-    pagepixmapprovider.h #\
+     #\
 #    backpixmapitem.h
 
 SOURCES +=      main.cpp \
                 ../shared/tokenmanager.cpp \
                 ../shared/me.cpp \
-    networkaccessmanagerfactory.cpp \
-    networkaccessmanager.cpp \
-    userinfohelper.cpp \
+                pagepixmapprovider.cpp \
+                networkaccessmanagerfactory.cpp \
+                networkaccessmanager.cpp \
+                userinfohelper.cpp \
 #    posthelper.cpp \
 #    mobilepostvalidator.cpp \
 #    postupdaterelay.cpp
-    pagepixmapprovider.cpp #\
+     #\
 #    backpixmapitem.cpp
 
 QML_ROOT +=         qml/main.qml \
@@ -108,7 +110,8 @@ DATA_FILES +=       data/friends.png \
                     data/sfiet_konstantin.jpg \
                     data/aniket.jpg \
                     data/w00t.jpg \
-                    data/zchydem.jpg
+                    data/zchydem.jpg \
+                    data/libfriends-qml-clientidplugin.so
 
 OTHER_FILES +=      $${QML_ROOT} \
                     $${QML_COMPONENTS} \
@@ -116,7 +119,6 @@ OTHER_FILES +=      $${QML_ROOT} \
                     $${QML_PAGES} \
                     $${QML_DIALOGS} \
                     $${DATA_FILES}
-
 # Deployment
 contains(CONFIG, optify) {
 target.path = $${OPTDIR}/bin

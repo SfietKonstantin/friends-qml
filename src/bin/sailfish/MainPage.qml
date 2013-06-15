@@ -15,7 +15,9 @@ Page {
         Column {
             id: column
             anchors.top: cover.bottom
+            anchors.left: parent.left; anchors.right: parent.right
             Repeater {
+                anchors.left: parent.left; anchors.right: parent.right
                 model: ListModel {
                     ListElement {
                         text: "News feed"

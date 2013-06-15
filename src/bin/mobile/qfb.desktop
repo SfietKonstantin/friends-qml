@@ -4,7 +4,7 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Friends
-Exec=/usr/bin/invoker -s --type=e /opt/qfb/bin/qfb-mobile
+Exec=/usr/bin/invoker -s --type=e /opt/qfb/bin/friends-qml-harmattan
 Icon=/usr/share/icons/hicolor/80x80/apps/qfb.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
