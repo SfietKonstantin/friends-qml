@@ -72,9 +72,9 @@ AbstractFacebookPage {
                     id: entry
                     identifier: model.contentItem.identifier
                     name: model.contentItem.name
-//                    onClicked: PageManagement.addPage("PhotoListPage",
-//                                                      {identifier: identifier, name: container.name,
-//                                                       coverUrl: container.coverUrl})
+                    onClicked: PageManagement.addPage("PhotoListPage",
+                                                      {identifier: identifier, name: container.name,
+                                                       coverUrl: container.coverUrl})
                 }
             }
         }

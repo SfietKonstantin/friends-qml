@@ -15,8 +15,6 @@ Item {
 
     Item {
         id: coverBackground
-        // That's dirty
-        // replace with a nice shader instead of just opacity ramp
         anchors.top: parent.top
         anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom
         clip: true

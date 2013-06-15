@@ -23,7 +23,7 @@ import "../pagemanagement.js" as PageManagement
 import "../composite"
 import "../components"
 
-Page {
+AbstractFacebookPage {
     id: container
     property string identifier
     property string name
@@ -31,6 +31,7 @@ Page {
     function load() {
         _facebook_.nodeIdentifier = container.identifier
         _facebook_.filters = [_photosFilter_]
+        _facebook_.populate()
 //        photoList.load()
     }
 
@@ -61,6 +62,7 @@ Page {
         GridView {
             id: view
             property real columns: 3
+            visible: !container.loading
             clip: true
             anchors.top: parent.top; anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -96,12 +98,13 @@ Page {
                 MouseArea {
                     anchors.fill: parent
 //                    onClicked: container.showPhoto(repeater.model, model.index)
+                    onClicked: PageManagement.showPhotoViewer(model.index)
                 }
             }
         }
-        LoadingMessage {loading: _facebook_.status != Facebook.Idle}
+        LoadingMessage {loading: container.loading}
         EmptyStateLabel {
-            visible: _facebook_.status == Facebook.Idle && _facebook_.count == 0
+            visible: !container.loading && _facebook_.count == 0
             text: qsTr("No photos")
         }
     }

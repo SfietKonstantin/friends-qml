@@ -107,13 +107,13 @@ AbstractFacebookPage {
                                                    name: container.name,
                                                    coverUrl: cover.coverUrl})
             }
-//            MenuItem {
-//                text: qsTr("Photos")
-//                onClicked: PageManagement.addPage("PhotoListPage",
-//                                                  {identifier: container.identifier,
-//                                                   name: container.name,
-//                                                   coverUrl: cover.coverUrl})
-//            }
+            MenuItem {
+                text: qsTr("Photos")
+                onClicked: PageManagement.addPage("PhotoListPage",
+                                                  {identifier: container.identifier,
+                                                   name: container.name,
+                                                   coverUrl: cover.coverUrl})
+            }
         }
     }
 

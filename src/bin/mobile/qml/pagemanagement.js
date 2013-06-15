@@ -55,10 +55,10 @@ function addPage(name, properties) {
     //_facebook_.nextNode()
 }
 
-//function showPhotoViewer(model, index) {
-//    var newPage = _window_.pageStack.push(Qt.resolvedUrl("PhotoViewerPage.qml"), {model: model})
-//    newPage.setPosition(index)
-//}
+function showPhotoViewer(index) {
+    var newPage = _window_.pageStack.push(Qt.resolvedUrl("PhotoViewerPage.qml"))
+    newPage.setPosition(index)
+}
 
 //function showFeedDialog(facebookId) {
 //    _feed_dialog_.to = facebookId
