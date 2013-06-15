@@ -14,6 +14,8 @@
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     QScopedPointer<QApplication> app(Sailfish::createApplication(argc, argv));
+    app.data()->setApplicationName("Friends");
+    app.data()->setOrganizationName("SfietKonstantin");
     TokenManager tokenManager;
     Me me;
     QFB::LoginManager loginManager;

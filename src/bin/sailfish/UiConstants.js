@@ -17,7 +17,7 @@
 .pragma library
 
 // Banners
-var BANNER_HEIGHT_LARGE         = 250
+var BANNER_HEIGHT_LARGE         = 300
 
 //Font size
 //var FONT_SIZE_XXLARGE           = 48;

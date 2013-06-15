@@ -20,8 +20,8 @@ import "UiConstants.js" as Ui
 
 Image {
     id: image
-    onSourceChanged: console.debug(source)
     property string url
+    onUrlChanged: _imageLoader_.load(url)
     smooth: true
     asynchronous: true
     opacity: 0

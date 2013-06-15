@@ -1,6 +1,6 @@
 import QtQuick 1.1
 import Sailfish.Silica 1.0
-//import Qt.labs.shaders 1.0
+import Qt.labs.shaders 1.0
 import "UiConstants.js" as Ui
 
 Item {
@@ -17,7 +17,7 @@ Item {
         id: coverBackground
         // That's dirty
         // replace with a nice shader instead of just opacity ramp
-        //anchors.top: parent.top; anchors.topMargin: theme.paddingSmall
+        anchors.top: parent.top
         anchors.left: parent.left; anchors.right: parent.right; anchors.bottom: parent.bottom
         clip: true
 
@@ -28,45 +28,40 @@ Item {
             url: coverUrl
         }
 
-        OpacityRampEffect {
-            id: imageEffect
-            sourceItem: image
-            direction: OpacityRampEffect.TopToBottom
-            offset: 0.50
-            slope: 2
+//        OpacityRampEffect {
+//            id: imageEffect
+//            sourceItem: image
+//            direction: OpacityRampEffect.TopToBottom
+//            offset: 0.50
+//            slope: 2
+//        }
+
+        ShaderEffectItem {
+            property variant source: ShaderEffectSource {
+                sourceItem: image
+                hideSource: true
+            }
+            property real _imageOpacity: image.opacity
+
+            anchors.fill: image
+
+            fragmentShader: "
+            varying highp vec2 qt_TexCoord0;
+            uniform float height;
+            uniform sampler2D source;
+            uniform float _imageOpacity;
+            void main(void)
+            {
+                lowp vec4 textureColor = texture2D(source, qt_TexCoord0.st);
+                //gl_FragColor = textureColor;
+                lowp float opacity = //smoothstep(0.05, 0.15, 1. - qt_TexCoord0.y)
+                                     smoothstep(0.15, 0.30, qt_TexCoord0.y)
+                                     * _imageOpacity;
+                gl_FragColor = vec4(textureColor.xyz, 1.) * opacity;
+            }
+            "
         }
     }
-
-//    ShaderEffectItem {
-//        property variant source: ShaderEffectSource {
-//            sourceItem: coverBackground
-//        }
-//        property int titleHeight: nameLabel.height + theme.paddingMedium
-//        property int separatorHeight: theme.paddingLarge
-
-////        property real _titleHeightRatio: flickArea.contentY > 0 ? 1 - titleHeight / height : 0
-////        property real _titleHeightAndSeparatorRatio: flickArea.contentY > 0
-////                                                     ? 1 - (titleHeight + separatorHeight) / height
-////                                                     : 0
-
-
-//        anchors.fill: coverBackground
-
-//        fragmentShader: "
-//        varying highp vec2 qt_TexCoord0;
-//        //uniform float height;
-//        uniform sampler2D source;
-//        void main(void)
-//        {
-//            lowp vec4 textureColor = texture2D(source, qt_TexCoord0.st);
-//            //gl_FragColor = smoothstep(0., 1.,
-//            //                          qt_TexCoord0.y)
-//            //               * textureColor;
-//            gl_FragColor = textureColor;
-//        }
-//        "
-//    }
-
 
     Label {
         id: nameLabel
