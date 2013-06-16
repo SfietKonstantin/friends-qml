@@ -34,6 +34,7 @@ AbstractFacebookPage {
         if (state == "push_in") {
             _facebook_.nodeIdentifier = container.identifier
             _facebook_.filters = [_photosFilter_]
+            _facebook_.sorters = []
             _facebook_.populate()
             _facebook_.nextNode()
         }
@@ -56,7 +57,7 @@ AbstractFacebookPage {
 
     Item {
         id: content
-        anchors.top: cover.bottom; anchors.topMargin: Ui.MARGIN_DEFAULT
+        anchors.top: cover.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
@@ -68,18 +69,28 @@ AbstractFacebookPage {
             property real columns: 3
             clip: true
             anchors.top: parent.top; anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.left: parent.left; anchors.leftMargin: Ui.MARGIN_DEFAULT / 2
+            anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT / 2
             model: container.available ? _facebook_ : null
-            cellWidth: width / columns
+            cellWidth: (width - 3) / columns
             cellHeight: cellWidth
+
+            header: Item {
+                width: container.width
+                height: Ui.MARGIN_DEFAULT / 2
+            }
+
+            footer: Item {
+                width: container.width
+                height: Ui.MARGIN_DEFAULT / 2
+            }
 
             delegate: Item {
                 width: view.cellWidth
                 height: view.cellHeight
 
                 Rectangle {
-                    width: parent.width - Ui.MARGIN_DEFAULT
+                    width: parent.width - Ui.MARGIN_SMALL / 2
                     height: width
                     anchors.centerIn: parent
                     color: !theme.inverted ? "white" : "black"

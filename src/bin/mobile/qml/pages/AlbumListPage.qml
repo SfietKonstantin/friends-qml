@@ -32,6 +32,7 @@ AbstractFacebookPage {
         if (state == "push_in") {
             _facebook_.nodeIdentifier = container.identifier
             _facebook_.filters = [_albumsFilter_]
+            _facebook_.sorters = []
             _facebook_.populate()
             _facebook_.nextNode()
         }

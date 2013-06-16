@@ -129,7 +129,7 @@ PageStackWindow {
         }
     }
 
-    //NameSorter {id: _nameSorter_ }
+    AlphabeticalSorter {id: _nameSorter_; field: "name" }
     ContentItemTypeFilter {id: _friendsFilter_; type: Facebook.User}
     ContentItemTypeFilter {id: _albumsFilter_; type: Facebook.Album}
     ContentItemTypeFilter {id: _photosFilter_; type: Facebook.Photo}

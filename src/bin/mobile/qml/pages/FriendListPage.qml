@@ -36,9 +36,11 @@ AbstractFacebookPage {
         if (state == "push_in") {
             _facebook_.nodeIdentifier = ME.identifier
             _facebook_.filters = [_friendsFilter_]
-            //_facebook_.sorters = [_nameSorter_]
+            _facebook_.sorters = [_nameSorter_]
             _facebook_.populate()
             _facebook_.nextNode()
+        } else if (state == "pop_in") {
+            _facebook_.sorters = [_nameSorter_]
         }
     }
 
