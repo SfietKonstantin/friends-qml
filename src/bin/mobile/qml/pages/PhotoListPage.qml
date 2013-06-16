@@ -28,17 +28,21 @@ AbstractFacebookPage {
     property string identifier
     property string name
     property string coverUrl
-    function load() {
-        _facebook_.nodeIdentifier = container.identifier
-        _facebook_.filters = [_photosFilter_]
-        _facebook_.populate()
-//        photoList.load()
+
+
+    onStateChanged: {
+        if (state == "push_in") {
+            _facebook_.nodeIdentifier = container.identifier
+            _facebook_.filters = [_photosFilter_]
+            _facebook_.populate()
+            _facebook_.nextNode()
+        }
     }
 
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop()
+            onClicked: PageManagement.pop(true, true, true)
         }
     }
 
@@ -62,12 +66,11 @@ AbstractFacebookPage {
         GridView {
             id: view
             property real columns: 3
-            visible: !container.loading
             clip: true
             anchors.top: parent.top; anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            model: _facebook_
+            model: container.available ? _facebook_ : null
             cellWidth: width / columns
             cellHeight: cellWidth
 
@@ -85,7 +88,6 @@ AbstractFacebookPage {
                         id: picture
                         anchors.fill: parent
                         clip: true
-////    //                    pictureType: QFBPictureLoader.Normal
                         fillMode: Image.PreserveAspectCrop
                         identifier: model.contentItem.identifier
                     }
@@ -97,14 +99,13 @@ AbstractFacebookPage {
                 }
                 MouseArea {
                     anchors.fill: parent
-//                    onClicked: container.showPhoto(repeater.model, model.index)
                     onClicked: PageManagement.showPhotoViewer(model.index)
                 }
             }
         }
         LoadingMessage {loading: container.loading}
         EmptyStateLabel {
-            visible: !container.loading && _facebook_.count == 0
+            visible: !container.loading && container.available && view.model.count == 0
             text: qsTr("No photos")
         }
     }

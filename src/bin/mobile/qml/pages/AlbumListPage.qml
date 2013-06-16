@@ -27,17 +27,20 @@ AbstractFacebookPage {
     property string identifier
     property string name
     property string coverUrl
-    function load() {
-        _facebook_.nodeIdentifier = container.identifier
-        _facebook_.filters = [_albumsFilter_]
-        _facebook_.populate()
-//        albumList.load()
+
+    onStateChanged: {
+        if (state == "push_in") {
+            _facebook_.nodeIdentifier = container.identifier
+            _facebook_.filters = [_albumsFilter_]
+            _facebook_.populate()
+            _facebook_.nextNode()
+        }
     }
 
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop()
+            onClicked: PageManagement.pop(true, true, true)
         }
     }
 
@@ -52,7 +55,7 @@ AbstractFacebookPage {
 
     Item {
         id: content
-        anchors.top: cover.bottom; anchors.topMargin: Ui.MARGIN_DEFAULT
+        anchors.top: cover.bottom
         anchors.bottom: parent.bottom
         anchors.left: parent.left; anchors.right: parent.right
 
@@ -62,8 +65,19 @@ AbstractFacebookPage {
             id: view
             anchors.fill: parent
             clip: true
-            model: _facebook_
+            model: container.available ? _facebook_ : null
             spacing: Ui.MARGIN_DEFAULT
+
+            header: Item {
+                width: container.width
+                height: Ui.MARGIN_DEFAULT
+            }
+
+            footer: Item {
+                width: container.width
+                height: Ui.MARGIN_DEFAULT
+            }
+
             delegate: Item {
                 width: container.width
                 height: entry.height
@@ -72,36 +86,19 @@ AbstractFacebookPage {
                     id: entry
                     identifier: model.contentItem.identifier
                     name: model.contentItem.name
-                    onClicked: PageManagement.addPage("PhotoListPage",
+                    onClicked: PageManagement.addPage("PhotoListPage.qml",
                                                       {identifier: identifier, name: container.name,
-                                                       coverUrl: container.coverUrl})
+                                                       coverUrl: container.coverUrl}, true, true)
                 }
             }
         }
-
-
-//        Flickable {
-//            id: flickable
-//            anchors.fill: parent
-//            clip: true
-//            contentWidth: container.width
-//            contentHeight: albumList.height
-
-//            AlbumList {
-//                id: albumList
-////                graph: facebookId + "/albums"
-////                onShowAlbum: PageManagement.addPage("PhotoListPage", {facebookId: facebookId,
-////                                                                      name: container.name,
-////                                                                      coverUrl: container.coverUrl})
-//            }
-//        }
 
         LoadingMessage {
             loading: container.loading
         }
 
         EmptyStateLabel {
-            visible: !container.loading && _facebook_.count == 0
+            visible: !container.loading && container.available && view.model.count == 0
             text: qsTr("No albums")
         }
     }

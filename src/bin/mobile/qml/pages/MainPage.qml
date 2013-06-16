@@ -19,10 +19,8 @@ import com.nokia.meego 1.0
 import "../components"
 import "../pagemanagement.js" as PageManagement
 
-AbstractFacebookPage {
+Page {
     id: container
-    function load() {}
-    function loadPop() {}
 
     tools: ToolBarLayout {
         Item {}
@@ -80,12 +78,12 @@ AbstractFacebookPage {
 //                            newsPage.load()
 //                            _window_.pageStack.push(newsPage)
                         } else if (model.action == "showMe") {
-                            PageManagement.simpleAddPageAndLoad("UserPage", {name: ME.name,
-                                                                      identifier: ME.identifier,
-                                                                      needPop: false})
+                            PageManagement.addPage("UserPage.qml",
+                                                   {name: ME.name, identifier: ME.identifier,
+                                                    isUser: true}, false, true)
 
                         } else if (model.action == "showFriends") {
-                            PageManagement.addPage("FriendListPage", {})
+                            PageManagement.addPage("FriendListPage.qml", {}, false, true)
                         } else if (model.action == "showGroups") {
 //                            PageManagement.addPage("GroupListPage", {})
                         }
@@ -107,11 +105,7 @@ AbstractFacebookPage {
         MenuLayout {
             MenuItem {
                 text: qsTr("About Friends")
-                onClicked: PageManagement.simpleAddPage("AboutPage", {})
-            }
-            MenuItem {
-                text: qsTr("Quit")
-                onClicked: Qt.quit()
+                onClicked: PageManagement.addPage("AboutPage.qml", {}, false, false)
             }
         }
     }

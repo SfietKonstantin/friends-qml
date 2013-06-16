@@ -23,48 +23,24 @@ import "../components"
 
 AbstractFacebookPage {
     id: container
-
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
             onClicked: {
-                PageManagement.pop()
+                PageManagement.pop(true, false, true)
             }
         }
     }
 
-    function load()  {
-        _facebook_.nodeIdentifier = ME.identifier
-        _facebook_.filters = [_friendsFilter_]
-        //_facebook_.sorters = [_nameSorter_]
-        _facebook_.populate()
+    onStateChanged: {
+        if (state == "push_in") {
+            _facebook_.nodeIdentifier = ME.identifier
+            _facebook_.filters = [_friendsFilter_]
+            //_facebook_.sorters = [_nameSorter_]
+            _facebook_.populate()
+            _facebook_.nextNode()
+        }
     }
-
-//    function loadPop() {
-//        console.debug(listView.previousTopIndex)
-//        console.debug(listView.count)
-//        listView.positionViewAtEnd()
-//        listView.positionViewAtIndex(listView.previousTopIndex, ListView.Beginning)
-//        listView.contentY = listView.previousY
-
-//    }
-
-//    Connections {
-//        target: _facebook_
-//        onNodeChanged : {
-//            console.debug(listView.previousTopIndex)
-//            listView.positionViewAtIndex(listView.previousTopIndex, ListView.Contain)
-//            console.debug("changed")
-//        }
-//    }
-
-//        onStatusChanged: {
-//    onUpdateWhilePopped: {
-//            console.debug(container.beingPopped)
-//        if (_facebook_.status == Facebook.Idle && container.beingPopped) {
-//        }
-//    }
-//    }
 
     Item {
         anchors.fill: parent
@@ -77,34 +53,34 @@ AbstractFacebookPage {
         }
 
         ListView {
-            id: listView
+            id: view
             property double opacityValue: 0
             property double previousTopIndex: 0
             onCountChanged: {
-                positionViewAtIndex(previousTopIndex, ListView.Beginning)
+                positionViewAtIndex(previousTopIndex, view.Beginning)
             }
 
             anchors.top: cover.bottom; anchors.bottom: parent.bottom
             anchors.left: parent.left; anchors.right: parent.right
             highlightFollowsCurrentItem: true
             clip: true
-            model: _facebook_
+            model: container.available ? _facebook_ : null
             delegate: FriendEntry {
                 identifier: model.contentItem.identifier
                 name: model.contentItem.name
-                opacity: listView.opacityValue
+                opacity: view.opacityValue
                 onClicked: {
-                    PageManagement.addPage("UserPage", {identifier: model.contentItem.identifier,
-                                                        name: model.contentItem.name})
-                    listView.previousTopIndex = listView.indexAt(listView.width / 2,
-                                                                 listView.contentY)
+                    PageManagement.addPage("UserPage.qml",
+                                           {identifier: model.contentItem.identifier,
+                                            name: model.contentItem.name}, true, true)
+                    view.previousTopIndex = view.indexAt(view.width / 2, view.contentY)
                 }
             }
             section.property: "section"
             section.criteria : ViewSection.FirstCharacter
             section.delegate: GroupIndicator {
                 text: section
-                opacity: listView.opacityValue
+                opacity: view.opacityValue
             }
 
             ScrollDecorator {flickableItem: parent}
@@ -113,7 +89,7 @@ AbstractFacebookPage {
                 State {
                     name: "loaded"; when: !container.loading
                     PropertyChanges {
-                        target: listView
+                        target: view
                         opacityValue: 1
                     }
                 }
@@ -126,7 +102,7 @@ AbstractFacebookPage {
             LoadingMessage {loading: container.loading}
 
             EmptyStateLabel {
-                visible: !container.loading && _facebook_.count == 0
+                visible: !container.loading && container.available && view.model.count == 0
                 text: qsTr("No friends")
             }
         }

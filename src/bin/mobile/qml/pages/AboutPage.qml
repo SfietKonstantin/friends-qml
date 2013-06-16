@@ -27,7 +27,7 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.simplePop()
+            onClicked: PageManagement.pop(false, false)
         }
     }
 
@@ -92,7 +92,7 @@ and keeping it status of Open Source software.")
         Button {
             iconSource: DATA_PATH + "developers.png"
             text: qsTr("Developers")
-            onClicked: PageManagement.simpleAddPage("DevelopersPage", {})
+            onClicked: PageManagement.addPage("DevelopersPage.qml", {}, false, false)
         }
     }
 }

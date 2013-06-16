@@ -26,7 +26,8 @@ Item {
     property string coverUrl
     anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top
     height: Ui.BANNER_HEIGHT_LARGE + Ui.MARGIN_DEFAULT + Ui.BANNER_HEIGHT_PORTRAIT / 2
-    function load() {
+//    function load() {
+    onIdentifierChanged: {
         _imageLoader_.load(_imageLoader_.pictureUrl(container.identifier, _facebook_.accessToken,
                                                     Ui.BANNER_PORTRAIT, Ui.BANNER_PORTRAIT))
     }
@@ -117,7 +118,6 @@ Item {
         onLoaded: {
             if (url == _imageLoader_.pictureUrl(container.identifier,_facebook_.accessToken,
                                                 Ui.BANNER_PORTRAIT, Ui.BANNER_PORTRAIT)) {
-//                console.debug(path)
                 portrait.source = path
             }
         }

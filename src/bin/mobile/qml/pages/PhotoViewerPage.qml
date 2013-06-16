@@ -16,7 +16,6 @@
 
 import QtQuick 1.1
 import com.nokia.meego 1.0
-//import org.SfietKonstantin.qfb 4.0
 import org.SfietKonstantin.qfb.mobile 4.0
 import "../UiConstants.js" as Ui
 import "../pagemanagement.js" as PageManagement
@@ -126,7 +125,7 @@ Page {
         ToolIcon {
             iconId: "toolbar-back"
             anchors.verticalCenter: parent.verticalCenter
-            onClicked: PageManagement.simplePop()
+            onClicked: PageManagement.pop(false, false, false)
         }
 
         Behavior on opacity {

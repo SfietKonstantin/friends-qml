@@ -23,7 +23,7 @@ import "../pagemanagement.js" as PageManagement
 import "../components"
 import "../composite"
 
-Page {
+AbstractFacebookPage {
     id: container
     property string identifier
     property string name
@@ -43,21 +43,23 @@ Page {
         }
     }
 
-    function load() {
-        setGender()
-        _facebook_.node.reload("gender,birthday,religion,political,bio,quotes")
-        _facebook_.node.genderChanged.connect(userInfo.manageGender)
-        _facebook_.node.birthdayChanged.connect(userInfo.manageBirthday)
-        _facebook_.node.religionChanged.connect(userInfo.manageReligion)
-        _facebook_.node.politicalChanged.connect(userInfo.managePolitical)
-        _facebook_.node.bioChanged.connect(userInfo.manageBio)
-        _facebook_.node.quotesChanged.connect(userInfo.manageQuotes())
+    onStateChanged: {
+        if (state == "push_in") {
+            setGender()
+            _facebook_.node.reload("gender,birthday,religion,political,bio,quotes")
+            _facebook_.node.genderChanged.connect(userInfo.manageGender)
+            _facebook_.node.birthdayChanged.connect(userInfo.manageBirthday)
+            _facebook_.node.religionChanged.connect(userInfo.manageReligion)
+            _facebook_.node.politicalChanged.connect(userInfo.managePolitical)
+            _facebook_.node.bioChanged.connect(userInfo.manageBio)
+            _facebook_.node.quotesChanged.connect(userInfo.manageQuotes())
+        }
     }
 
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.simplePop()
+            onClicked: PageManagement.pop(false, false, false)
         }
     }
 
@@ -109,10 +111,10 @@ Page {
         }
 
         EmptyStateLabel {
-            visible: !userInfo.valid && _facebook_.node.status == Facebook.Idle
+            visible: !userInfo.valid && !loading
             text: qsTr("No informations")
         }
     }
 
-    LoadingMessage {loading: _facebook_.status != Facebook.Idle}
+    LoadingMessage {loading: loading}
 }

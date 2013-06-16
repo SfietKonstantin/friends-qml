@@ -14,49 +14,37 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
-function simplePop() {
-    _window_.pageStack.pop()
-}
-
-function simpleAddPage(name, properties) {
-    _window_.pageStack.push(Qt.resolvedUrl(name + ".qml"), properties)
-}
-
-function simpleAddPageAndLoad(name, properties) {
-    var page = _window_.pageStack.push(Qt.resolvedUrl(name + ".qml"), properties)
-    page.load()
-}
-
-function pop() {
+function pop(setOldState, setNewState, callPreviousNode) {
     var oldPage = _window_.pageStack.pop()
-    var currentPage = _window_.pageStack.currentPage
-
-//    console.debug("Current page: " + currentPage.identifier
-//                  + " old page: " + oldPage.identifier)
-//    if (currentPage.identifier != oldPage.identifier && currentPage.identifier != null) {
-//        _facebook_.previousNode()
-//    }
-    currentPage.beingPopped = true
-//    currentPage.loadPop()
-    //_window_.state = "popping"
-    //_facebook_.previousNode()
-    oldPage.displayPixmap()
-//    _window_.popping = true
-    _facebook_.previousNode()
+    var newPage = _window_.pageStack.currentPage
+    if (setOldState) {
+        oldPage.state = "pop_out"
+    }
+    if (setNewState) {
+        newPage.state = "pop_in"
+    }
+    if (callPreviousNode) {
+        _facebook_.previousNode()
+    }
 
 
 }
 
-function addPage(name, properties) {
-    //_window_.state = "pushing"
-    var newPage = _window_.pageStack.push(Qt.resolvedUrl(name + ".qml"), properties)
-    newPage.load()
-    newPage.beingPushed = true
-    //_facebook_.nextNode()
+function addPage(name, properties, setOldState, setNewState) {
+    var oldPage = _window_.pageStack.currentPage
+    var newPage = _window_.pageStack.push(Qt.resolvedUrl(name), properties)
+    if (setOldState) {
+        oldPage.state = "push_out"
+    }
+    if (setNewState) {
+        newPage.state = "push_in"
+    }
 }
 
 function showPhotoViewer(index) {
+    var oldPage = _window_.pageStack.currentPage
     var newPage = _window_.pageStack.push(Qt.resolvedUrl("PhotoViewerPage.qml"))
+    oldPage.state = "push_out"
     newPage.setPosition(index)
 }
 

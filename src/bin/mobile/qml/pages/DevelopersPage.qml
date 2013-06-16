@@ -28,7 +28,7 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.simplePop()
+            onClicked: PageManagement.pop(false, false)
         }
     }
 
