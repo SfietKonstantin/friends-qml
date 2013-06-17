@@ -76,7 +76,10 @@ AbstractFacebookPage {
 
         ToolIcon {
             iconId: "toolbar-view-menu"
-            onClicked: menu.open()
+            onClicked: {
+                menu.open()
+                createScreen()
+            }
         }
     }
 

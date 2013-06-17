@@ -48,6 +48,12 @@ function showPhotoViewer(index) {
     newPage.setPosition(index)
 }
 
+function popFromPhotoViewer(index) {
+    _window_.pageStack.pop()
+    var photoListPage = _window_.pageStack.currentPage
+    photoListPage.repositionView(index)
+}
+
 //function showFeedDialog(facebookId) {
 //    _feed_dialog_.to = facebookId
 //    _feed_dialog_.showDialog()

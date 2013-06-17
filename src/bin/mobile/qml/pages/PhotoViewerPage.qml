@@ -125,11 +125,18 @@ Page {
         ToolIcon {
             iconId: "toolbar-back"
             anchors.verticalCenter: parent.verticalCenter
-            onClicked: PageManagement.pop(false, false, false)
+            onClicked: PageManagement.popFromPhotoViewer(view.currentIndex)
         }
 
         Behavior on opacity {
             NumberAnimation {duration: Ui.ANIMATION_DURATION_XFAST}
         }
     }
+
+//    tools: ToolBarLayout {
+//        ToolIcon {
+//            iconId: "toolbar-back"
+//            onClicked: PageManagement.popFromPhotoViewer(view.currentIndex)
+//        }
+//    }
 }

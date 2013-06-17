@@ -46,13 +46,19 @@ AbstractFacebookPage {
     onStateChanged: {
         if (state == "push_in") {
             setGender()
+            userInfo.birthday = _facebook_.node.birthday
+            userInfo.religion = _facebook_.node.religion
+            userInfo.political = _facebook_.node.political
+            userInfo.bio = _facebook_.node.bio
+            userInfo.quotes = _facebook_.node.quotes
+
             _facebook_.node.reload("gender,birthday,religion,political,bio,quotes")
             _facebook_.node.genderChanged.connect(userInfo.manageGender)
             _facebook_.node.birthdayChanged.connect(userInfo.manageBirthday)
             _facebook_.node.religionChanged.connect(userInfo.manageReligion)
             _facebook_.node.politicalChanged.connect(userInfo.managePolitical)
             _facebook_.node.bioChanged.connect(userInfo.manageBio)
-            _facebook_.node.quotesChanged.connect(userInfo.manageQuotes())
+            _facebook_.node.quotesChanged.connect(userInfo.manageQuotes)
         }
     }
 

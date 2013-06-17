@@ -29,6 +29,9 @@ AbstractFacebookPage {
     property string name
     property string coverUrl
 
+    function repositionView(index) {
+        view.positionViewAtIndex(index, GridView.Contain)
+    }
 
     onStateChanged: {
         if (state == "push_in") {

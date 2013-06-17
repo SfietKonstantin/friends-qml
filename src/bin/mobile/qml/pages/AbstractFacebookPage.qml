@@ -10,6 +10,14 @@ Page {
                            && (_facebook_.status != Facebook.Idle &&
                                _facebook_.status != Facebook.Error)
 
+    function createScreen() {
+        if (_window_.inPortrait) {
+            image.source = "image://pagepixmapprovider/screenshotportrait"
+        } else {
+            image.source = "image://pagepixmapprovider/screenshotlandscape"
+        }
+    }
+
     states: [
         State { name: "push_in" },
         State { name: "push_out" },
@@ -27,22 +35,32 @@ Page {
     }
 
     Connections {
+        target: _window_
+        onInPortraitChanged: {
+            if (image.source != "") {
+                page.createScreen()
+            }
+        }
+    }
+
+    Connections {
         target: page
         onStateChanged: {
             if (state == "") {
                 image.source = ""
+                image.visible = false
             } else if (state == "pop_out" || state == "push_out") {
-                if (_window_.inPortrait) {
-                    image.source = "image://pagepixmapprovider/screenshotportrait"
-                } else {
-                    image.source = "image://pagepixmapprovider/screenshotlandscape"
+                if (image.source == "") {
+                    createScreen()
                 }
+                image.visible = true
             }
         }
     }
 
     Image {
         id: image
+        visible: false
         z: 1000
         cache: false
 //        asynchronous: true

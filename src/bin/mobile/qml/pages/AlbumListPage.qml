@@ -92,6 +92,12 @@ AbstractFacebookPage {
                                                        coverUrl: container.coverUrl}, true, true)
                 }
             }
+
+            ViewPreviousTracker {
+                view: view
+                available: container.available
+                mode: ListView.Beginning
+            }
         }
 
         LoadingMessage {

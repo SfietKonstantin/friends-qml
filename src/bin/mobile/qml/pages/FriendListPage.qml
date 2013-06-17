@@ -57,11 +57,6 @@ AbstractFacebookPage {
         ListView {
             id: view
             property double opacityValue: 0
-            property double previousTopIndex: 0
-            onCountChanged: {
-                positionViewAtIndex(previousTopIndex, view.Beginning)
-            }
-
             anchors.top: cover.bottom; anchors.bottom: parent.bottom
             anchors.left: parent.left; anchors.right: parent.right
             highlightFollowsCurrentItem: true
@@ -75,7 +70,6 @@ AbstractFacebookPage {
                     PageManagement.addPage("UserPage.qml",
                                            {identifier: model.contentItem.identifier,
                                             name: model.contentItem.name}, true, true)
-                    view.previousTopIndex = view.indexAt(view.width / 2, view.contentY)
                 }
             }
             section.property: "section"
@@ -107,6 +101,13 @@ AbstractFacebookPage {
                 visible: !container.loading && container.available && view.model.count == 0
                 text: qsTr("No friends")
             }
+
+            ViewPreviousTracker {
+                view: view
+                available: container.available
+                mode: ListView.Beginning
+            }
+
         }
     }
 }

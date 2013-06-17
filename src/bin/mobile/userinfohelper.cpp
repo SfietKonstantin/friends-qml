@@ -105,7 +105,6 @@ void UserInfoHelper::setBio(const QString &bio)
 {
     if (m_bio != bio) {
         m_bio = bio;
-        //createText();
         emit bioChanged();
     }
 }
@@ -114,7 +113,6 @@ void UserInfoHelper::setQuotes(const QString &quotes)
 {
     if (m_quotes != quotes) {
         m_quotes = quotes;
-        //createText();
         emit quotesChanged();
     }
 }

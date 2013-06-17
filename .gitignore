@@ -6,8 +6,6 @@ qtc_packaging
 src/extra/clientid-plugin
 
 # Other files
-autoobs.sh
-src/bin/mobile/clientidinterface.h
 src/bin/mobile/mobilepostvalidator.cpp
 src/bin/mobile/mobilepostvalidator.h
 src/bin/mobile/posthelper.cpp
@@ -26,6 +24,3 @@ src/bin/mobile/qml/pages/LikesPage.qml
 src/bin/mobile/qml/pages/NewsPage.qml
 src/bin/mobile/qml/pages/PhotoViewerPage.qml
 src/bin/mobile/qml/pages/PostPage.qml
-src/bin/mobile/userinfohelper.cpp
-src/bin/mobile/userinfohelper.h
-src/bin/sailfish/

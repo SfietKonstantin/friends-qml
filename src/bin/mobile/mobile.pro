@@ -65,6 +65,7 @@ QML_COMPONENTS +=   qml/components/Separator.qml \
                     qml/components/LoadingButton.qml \
                     qml/components/EmptyStateLabel.qml \
                     qml/components/ClickableEntry.qml \
+                    qml/components/ViewPreviousTracker.qml \
                     qml/components/FriendEntry.qml \
 #                    qml/components/GroupBookmarkEntry.qml \
 #                    qml/components/CommentEntry.qml \
@@ -119,6 +120,7 @@ OTHER_FILES +=      $${QML_ROOT} \
                     $${QML_PAGES} \
                     $${QML_DIALOGS} \
                     $${DATA_FILES}
+
 # Deployment
 contains(CONFIG, optify) {
 target.path = $${OPTDIR}/bin
