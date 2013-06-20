@@ -116,10 +116,19 @@ AbstractFacebookPage {
                     onClicked: PageManagement.showPhotoViewer(model.index)
                 }
             }
+
+            onAtYEndChanged: {
+                if (atYEnd && view.count > 0) {
+                    _facebook_.loadNext()
+                }
+            }
         }
-        LoadingMessage {loading: container.loading}
+        LoadingMessage {
+            loading: container.loading && view.count == 0
+        }
+
         EmptyStateLabel {
-            visible: !container.loading && container.available && view.model.count == 0
+            visible: !container.loading && container.available && view.count == 0
             text: qsTr("No photos")
         }
     }

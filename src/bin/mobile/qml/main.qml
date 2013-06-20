@@ -132,7 +132,7 @@ PageStackWindow {
     AlphabeticalSorter {id: _nameSorter_; field: "name" }
     ContentItemTypeFilter {id: _friendsFilter_; type: Facebook.User}
     ContentItemTypeFilter {id: _albumsFilter_; type: Facebook.Album}
-    ContentItemTypeFilter {id: _photosFilter_; type: Facebook.Photo}
+    ContentItemTypeFilter {id: _photosFilter_; type: Facebook.Photo; limit: 21}
 
     QFBImageLoader {
         id: _imageLoader_

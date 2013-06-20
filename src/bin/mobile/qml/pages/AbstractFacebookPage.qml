@@ -7,8 +7,7 @@ Page {
     id: page
     property bool available: _window_.pageStack.currentPage == page || state == "push_in"
     property bool loading: (state == "" || state == "push_in" || state == "pop_in")
-                           && (_facebook_.status != Facebook.Idle &&
-                               _facebook_.status != Facebook.Error)
+                           && (_facebook_.status == Facebook.Busy)
 
     function createScreen() {
         if (_window_.inPortrait) {

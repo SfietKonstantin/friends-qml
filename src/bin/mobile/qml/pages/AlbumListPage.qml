@@ -98,17 +98,21 @@ AbstractFacebookPage {
                 available: container.available
                 mode: ListView.Beginning
             }
+
+            onAtYEndChanged: {
+                if (atYEnd && view.count > 0) {
+                    _facebook_.loadNext()
+                }
+            }
         }
 
         LoadingMessage {
-            loading: container.loading
+            loading: container.loading && view.count == 0
         }
 
         EmptyStateLabel {
-            visible: !container.loading && container.available && view.model.count == 0
+            visible: !container.loading && container.available && view.count == 0
             text: qsTr("No albums")
         }
     }
-
-
 }
