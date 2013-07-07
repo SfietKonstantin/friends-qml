@@ -22,29 +22,29 @@ import "../pagemanagement.js" as PageManagement
 import "../composite"
 import "../components"
 
-AbstractFacebookPage {
+Page {
     id: container
     property string identifier
     property string name
     property string coverUrl
 
-    onStateChanged: {
-        if (state == "push_in") {
-            _facebook_.nodeIdentifier = container.identifier
-            _facebook_.filters = [_albumsFilter_]
-            _facebook_.sorters = []
-            _facebook_.populate()
-            _facebook_.nextNode()
-        }
+    function load() {
+        model.populate()
     }
 
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop(true, true, true)
+            onClicked: window.pageStack.pop()
         }
     }
 
+    SocialNetworkModel {
+        id: model
+        socialNetwork: facebook
+        nodeIdentifier: container.identifier
+        filters: [albumsFilter]
+    }
 
     Cover {
         id: cover
@@ -52,7 +52,6 @@ AbstractFacebookPage {
         category: qsTr("Albums")
         coverUrl: container.coverUrl
     }
-
 
     Item {
         id: content
@@ -66,7 +65,7 @@ AbstractFacebookPage {
             id: view
             anchors.fill: parent
             clip: true
-            model: container.available ? _facebook_ : null
+            model: model
             spacing: Ui.MARGIN_DEFAULT
 
             header: Item {
@@ -74,9 +73,9 @@ AbstractFacebookPage {
                 height: Ui.MARGIN_DEFAULT
             }
 
-            footer: Item {
+            footer: LoadingFooter {
                 width: container.width
-                height: Ui.MARGIN_DEFAULT
+                loading: model.status != SocialNetwork.Idle && model.count != 0
             }
 
             delegate: Item {
@@ -89,29 +88,23 @@ AbstractFacebookPage {
                     name: model.contentItem.name
                     onClicked: PageManagement.addPage("PhotoListPage.qml",
                                                       {identifier: identifier, name: container.name,
-                                                       coverUrl: container.coverUrl}, true, true)
+                                                       coverUrl: container.coverUrl}, true)
                 }
             }
 
-            ViewPreviousTracker {
-                view: view
-                available: container.available
-                mode: ListView.Beginning
-            }
-
             onAtYEndChanged: {
-                if (atYEnd && view.count > 0) {
-                    _facebook_.loadNext()
+                if (atYEnd && view.count > 0 && model.hasNext) {
+                    model.loadNext()
                 }
             }
         }
 
         LoadingMessage {
-            loading: container.loading && view.count == 0
+            loading: model.status != SocialNetwork.Idle && model.count == 0
         }
 
         EmptyStateLabel {
-            visible: !container.loading && container.available && view.count == 0
+            visible: model.status == SocialNetwork.Idle && model.count == 0
             text: qsTr("No albums")
         }
     }

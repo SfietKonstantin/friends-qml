@@ -80,10 +80,10 @@ Page {
                         } else if (model.action == "showMe") {
                             PageManagement.addPage("UserPage.qml",
                                                    {name: ME.name, identifier: ME.identifier,
-                                                    isUser: true}, false, true)
+                                                    isUser: true}, true)
 
                         } else if (model.action == "showFriends") {
-                            PageManagement.addPage("FriendListPage.qml", {}, false, true)
+                            PageManagement.addPage("FriendListPage.qml", {}, true)
                         } else if (model.action == "showGroups") {
 //                            PageManagement.addPage("GroupListPage", {})
                         }
@@ -105,7 +105,7 @@ Page {
         MenuLayout {
             MenuItem {
                 text: qsTr("About Friends")
-                onClicked: PageManagement.addPage("AboutPage.qml", {}, false, false)
+                onClicked: PageManagement.addPage("AboutPage.qml", {}, false)
             }
         }
     }

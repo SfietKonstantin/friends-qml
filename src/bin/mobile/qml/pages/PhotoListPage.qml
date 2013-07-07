@@ -23,31 +23,32 @@ import "../pagemanagement.js" as PageManagement
 import "../composite"
 import "../components"
 
-AbstractFacebookPage {
+Page {
     id: container
     property string identifier
     property string name
     property string coverUrl
 
-    function repositionView(index) {
-        view.positionViewAtIndex(index, GridView.Contain)
+    function load() {
+        model.populate()
     }
 
-    onStateChanged: {
-        if (state == "push_in") {
-            _facebook_.nodeIdentifier = container.identifier
-            _facebook_.filters = [_photosFilter_]
-            _facebook_.sorters = []
-            _facebook_.populate()
-            _facebook_.nextNode()
-        }
+    function repositionView(index) {
+        view.positionViewAtIndex(index, GridView.Contain)
     }
 
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop(true, true, true)
+            onClicked: window.pageStack.pop()
         }
+    }
+
+    SocialNetworkModel {
+        id: model
+        socialNetwork: facebook
+        nodeIdentifier: container.identifier
+        filters: [photosFilter]
     }
 
     Cover {
@@ -56,7 +57,6 @@ AbstractFacebookPage {
         category: qsTr("Photos")
         coverUrl: container.coverUrl
     }
-
 
     Item {
         id: content
@@ -73,8 +73,8 @@ AbstractFacebookPage {
             clip: true
             anchors.top: parent.top; anchors.bottom: parent.bottom
             anchors.left: parent.left; anchors.leftMargin: Ui.MARGIN_DEFAULT / 2
-            anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT / 2
-            model: container.available ? _facebook_ : null
+            anchors.right: parent.right
+            model: model
             cellWidth: (width - 3) / columns
             cellHeight: cellWidth
 
@@ -83,9 +83,10 @@ AbstractFacebookPage {
                 height: Ui.MARGIN_DEFAULT / 2
             }
 
-            footer: Item {
+            footer: LoadingFooter {
                 width: container.width
-                height: Ui.MARGIN_DEFAULT / 2
+                margins: Ui.MARGIN_DEFAULT / 2
+                visible: model.status != SocialNetwork.Idle && model.count != 0
             }
 
             delegate: Item {
@@ -113,22 +114,22 @@ AbstractFacebookPage {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: PageManagement.showPhotoViewer(model.index)
+                    onClicked: PageManagement.showPhotoViewer(view.model, model.index)
                 }
             }
 
             onAtYEndChanged: {
-                if (atYEnd && view.count > 0) {
-                    _facebook_.loadNext()
+                if (atYEnd && view.count > 0 && model.hasNext) {
+                    model.loadNext()
                 }
             }
         }
         LoadingMessage {
-            loading: container.loading && view.count == 0
+            visible: model.status != SocialNetwork.Idle && model.count == 0
         }
 
         EmptyStateLabel {
-            visible: !container.loading && container.available && view.count == 0
+            visible: model.status == SocialNetwork.Idle && model.count == 0
             text: qsTr("No photos")
         }
     }

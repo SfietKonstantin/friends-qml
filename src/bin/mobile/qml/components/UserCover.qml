@@ -25,11 +25,11 @@ Item {
     property string category
     property string coverUrl
     anchors.left: parent.left; anchors.right: parent.right; anchors.top: parent.top
-    height: Ui.BANNER_HEIGHT_LARGE + Ui.MARGIN_DEFAULT + Ui.BANNER_HEIGHT_PORTRAIT / 2
-//    function load() {
+    //height: Ui.BANNER_HEIGHT_LARGE + Ui.MARGIN_DEFAULT + Ui.BANNER_HEIGHT_PORTRAIT / 2
+    height: childrenRect.height
     onIdentifierChanged: {
-        _imageLoader_.load(_imageLoader_.pictureUrl(container.identifier, _facebook_.accessToken,
-                                                    Ui.BANNER_PORTRAIT, Ui.BANNER_PORTRAIT))
+        imageLoader.load(imageLoader.pictureUrl(container.identifier, facebook.accessToken,
+                                                Ui.BANNER_PORTRAIT, Ui.BANNER_PORTRAIT))
     }
 
     Rectangle {
@@ -49,6 +49,17 @@ Item {
 
     }
 
+    Rectangle {
+        anchors.bottom: coverBackground.bottom
+        anchors.left: parent.left; anchors.right: parent.right
+        height: Ui.MARGIN_DEFAULT + Ui.FONT_SIZE_XXLARGE + Ui.MARGIN_DEFAULT
+        opacity: 0.8
+        gradient: Gradient {
+            GradientStop {position: 0; color: "#00000000"}
+            GradientStop {position: 1; color: "black"}
+        }
+    }
+
     Text {
         id: nameText
         anchors.left: coverBackground.left; anchors.leftMargin: Ui.MARGIN_DEFAULT
@@ -59,7 +70,6 @@ Item {
         style: Text.Sunken
         styleColor: !theme.inverted ? Ui.FONT_COLOR_SECONDARY : Ui.FONT_COLOR_INVERTED_SECONDARY
         opacity: 0
-//        elide: Text.ElideRight
         wrapMode: Text.WordWrap
         font.pixelSize: Ui.FONT_SIZE_XXLARGE
         states: [
@@ -81,11 +91,9 @@ Item {
         id: portraitContainer
         opacity: 0
         anchors.right: parent.right; anchors.rightMargin: Ui.MARGIN_DEFAULT
-//        anchors.top: container.top; anchors.topMargin: Ui.MARGIN_DEFAULT
         anchors.verticalCenter: coverBackground.bottom
         width: Ui.BANNER_PORTRAIT + 2 * Ui.MARGIN_XSMALL
-        height: Math.min(portrait.height + 2 * Ui.MARGIN_XSMALL,
-                         cover.height - 2 * Ui.MARGIN_DEFAULT)
+        height: width
         color: "white"
 
         Item {
@@ -114,10 +122,10 @@ Item {
     }
 
     Connections {
-        target: _imageLoader_
+        target: imageLoader
         onLoaded: {
-            if (url == _imageLoader_.pictureUrl(container.identifier,_facebook_.accessToken,
-                                                Ui.BANNER_PORTRAIT, Ui.BANNER_PORTRAIT)) {
+            if (url == imageLoader.pictureUrl(container.identifier, facebook.accessToken,
+                                              Ui.BANNER_PORTRAIT, Ui.BANNER_PORTRAIT)) {
                 portrait.source = path
             }
         }

@@ -26,6 +26,7 @@ Page {
     function setPosition(index) {
         view.positionViewAtIndex(index, ListView.Contain)
     }
+    property alias model: view.model
 
     Rectangle {
         anchors.fill: parent
@@ -37,9 +38,10 @@ Page {
         clip: true
         anchors.fill: parent
         orientation: ListView.Horizontal
-        model: _facebook_
         snapMode: ListView.SnapOneItem
         highlightRangeMode: ListView.StrictlyEnforceRange
+        model: container.model
+        cacheBuffer: 2 * view.width
 
         delegate: Flickable {
             id: flickable

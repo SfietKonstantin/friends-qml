@@ -26,21 +26,8 @@ import "dialogs"
 import "pagemanagement.js" as PageManagement
 
 PageStackWindow {
-    id: _window_
+    id: window
     initialPage: mainPage
-//    property bool popping: false
-
-    Connections {
-        target: _window_.pageStack
-//        onBusyChanged: {
-//            if (!_window_.pageStack.busy) {
-//                if (_window_.popping) {
-//                    _window_.popping = false
-//                    _facebook_.previousNode()
-//                }
-//            }
-//        }
-    }
 
     Component.onCompleted: {
         LOGIN_MANAGER.clientId = CLIENT_ID
@@ -107,62 +94,65 @@ PageStackWindow {
             loginSheet.open()
             LOGIN_MANAGER.login()
         } else {
-            _facebook_.accessToken = TOKEN_MANAGER.token
+            facebook.accessToken = TOKEN_MANAGER.token
         }
     }
 
     Connections {
         target: LOGIN_MANAGER
         onLoginSucceeded: {
-            _facebook_.accessToken = token
+            facebook.accessToken = token
             TOKEN_MANAGER.token = token
             loginSheet.close()
         }
     }
 
     Facebook {
-        id: _facebook_
+        id: facebook
+
+//        onStatusChanged: console.debug("Current status: " + status + ", node: " + node)
+//        onErrorChanged: console.debug("Current error: " + error)
+//        onErrorMessageChanged: console.debug("Current error message: " + errorMessage)
+
         onAccessTokenChanged: {
             if (accessToken != "") {
-                initialInfoLoader.getInitialInfo()
+                initialInfoModel.getInitialInfo()
             }
         }
     }
 
-    AlphabeticalSorter {id: _nameSorter_; field: "name" }
-    ContentItemTypeFilter {id: _friendsFilter_; type: Facebook.User}
-    ContentItemTypeFilter {id: _albumsFilter_; type: Facebook.Album}
-    ContentItemTypeFilter {id: _photosFilter_; type: Facebook.Photo; limit: 21}
+    AlphabeticalSorter {id: nameSorter; field: "name" }
+    ContentItemTypeFilter {id: feedFilter; type: Facebook.Post}
+    ContentItemTypeFilter {id: friendsFilter; type: Facebook.User}
+    ContentItemTypeFilter {id: albumsFilter; type: Facebook.Album}
+    ContentItemTypeFilter {id: photosFilter; type: Facebook.Photo; limit: 21}
+
+    StoryDataFilter {id: storyDataFilter}
 
     QFBImageLoader {
-        id: _imageLoader_
+        id: imageLoader
     }
 
-    QtObject {
-        id: initialInfoLoader
+    SocialNetworkModel {
+        id: initialInfoModel
+        socialNetwork: facebook
         property bool loading: false
         function getInitialInfo() {
+            console.debug("getting intial info")
             loading = true
-            _facebook_.nodeIdentifier = "me"
-            _facebook_.filters = []
-            _facebook_.sorters = []
-            _facebook_.populate()
-            _facebook_.nextNode()
+            nodeIdentifier = "me"
+            populate()
         }
         function setCover() {
-            ME.coverUrl = _facebook_.node.cover.source
+            ME.coverUrl = node.cover.source
             loading = false
         }
-    }
-
-    Connections {
-        target: _facebook_
         onStatusChanged: {
-            if (initialInfoLoader.loading && _facebook_.node != null) {
-                ME.identifier = _facebook_.node.identifier
-                ME.name = _facebook_.node.name
-                _facebook_.node.coverChanged.connect(initialInfoLoader.setCover)
-                _facebook_.node.reload("cover")
+            if (loading && node != null) {
+                ME.identifier = node.identifier
+                ME.name = node.name
+                node.coverChanged.connect(setCover)
+                node.reload("cover")
             }
         }
     }
@@ -207,6 +197,22 @@ PageStackWindow {
 //        }
 //    }
 
+//    Connections {
+//        target: _facebook_
+//        onStatusChanged: {
+//            if (_facebook_.status == SocialNetwork.Error) {
+//                if (ME.identifier == "") {
+//                    _facebook_.popNode()
+//                    LOGIN_MANAGER.login()
+//                    loginSheet.open()
+//                    return
+//                }
+//                errorBanner.parent = _window_.pageStack.currentPage
+//                errorBanner.show()
+//            }
+//        }
+//    }
+
     LoginSheet {
         id: loginSheet
         onRejected: Qt.quit()
@@ -229,5 +235,10 @@ PageStackWindow {
     InfoBanner {
         id: _launching_web_browser_info_banner_
         text: qsTr("Launching web browser")
+    }
+
+    InfoBanner {
+        id: errorBanner
+        text: qsTr("Session expired. Please restart Friends and login again")
     }
 }

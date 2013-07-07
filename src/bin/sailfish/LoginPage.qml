@@ -5,6 +5,7 @@ import org.SfietKonstantin.qfb.login 4.0
 
 Page {
     PageHeader {
+        id: header
         title: qsTr("Login")
     }
 
@@ -73,8 +74,10 @@ Page {
     }
 
     Flickable {
-        anchors.fill: parent
+        anchors.top: header.bottom; anchors.left: parent.left; anchors.right: parent.right
+        anchors.bottom: parent.bottom
         contentHeight: webView.height
+        clip: true
 
         WebView {
             id: webView

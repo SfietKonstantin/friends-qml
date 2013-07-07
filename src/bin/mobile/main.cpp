@@ -22,7 +22,7 @@
 #include <QtDeclarative/QDeclarativeView>
 
 #include "userinfohelper.h"
-//#include "posthelper.h"
+#include "posthelper.h"
 //#include "mobilepostvalidator.h"
 //#include "querymanager.h"
 #include "loginmanager.h"
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     qmlRegisterType<UserInfoHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBUserInfoHelper");
 //    qmlRegisterType<BackPixmapItem>("org.SfietKonstantin.qfb.mobile", 4, 0,
 //                                    "QFBBackPixmapItem");
-//    qmlRegisterType<PostHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBPostHelper");
+    qmlRegisterType<PostHelper>("org.SfietKonstantin.qfb.mobile", 4, 0, "QFBPostHelper");
 //    qmlRegisterType<MobilePostValidator>("org.SfietKonstantin.qfb.mobile", 4, 0,
 //                                         "QFBMobilePostValidator");
 

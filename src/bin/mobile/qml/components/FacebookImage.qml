@@ -21,7 +21,7 @@ import "../UiConstants.js" as Ui
 Image {
     id: image
     property string url
-    onUrlChanged: _imageLoader_.load(url)
+    onUrlChanged: imageLoader.load(url)
     smooth: true
     asynchronous: true
     opacity: 0
@@ -37,7 +37,7 @@ Image {
     }
 
     Connections {
-        target: _imageLoader_
+        target: imageLoader
         onLoaded: {
             if (url == image.url) {
                 image.source = path

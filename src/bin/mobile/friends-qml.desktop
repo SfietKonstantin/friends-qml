@@ -4,8 +4,8 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Friends
-Exec=/usr/bin/invoker -s --type=e /opt/qfb/bin/friends-qml-harmattan
-Icon=/usr/share/icons/hicolor/80x80/apps/qfb.png
+Exec=/usr/bin/invoker -s --type=e /opt/friends-qml/bin/friends-qml-harmattan
+Icon=/usr/share/icons/hicolor/80x80/apps/friends-qml.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
 X-Osso-Type=application/x-executable

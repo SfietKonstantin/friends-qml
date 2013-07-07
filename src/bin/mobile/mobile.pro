@@ -33,7 +33,7 @@ HEADERS +=      ../shared/tokenmanager.h \
                 networkaccessmanagerfactory.h \
                 networkaccessmanager.h \
                 userinfohelper.h \
-#    posthelper.h \
+                posthelper.h \
 #    mobilepostvalidator.h \
 #    postupdaterelay.h
      #\
@@ -46,7 +46,7 @@ SOURCES +=      main.cpp \
                 networkaccessmanagerfactory.cpp \
                 networkaccessmanager.cpp \
                 userinfohelper.cpp \
-#    posthelper.cpp \
+                posthelper.cpp \
 #    mobilepostvalidator.cpp \
 #    postupdaterelay.cpp
      #\
@@ -63,26 +63,25 @@ QML_COMPONENTS +=   qml/components/Separator.qml \
                     qml/components/LoadingIndicator.qml \
                     qml/components/LoadingMessage.qml \
                     qml/components/LoadingButton.qml \
+                    qml/components/LoadingFooter.qml \
                     qml/components/EmptyStateLabel.qml \
                     qml/components/ClickableEntry.qml \
-                    qml/components/ViewPreviousTracker.qml \
                     qml/components/FriendEntry.qml \
 #                    qml/components/GroupBookmarkEntry.qml \
 #                    qml/components/CommentEntry.qml \
                     qml/components/Cover.qml \
                     qml/components/UserCover.qml \
                     qml/components/Container.qml \
-#                    qml/components/Post.qml \
+                    qml/components/Post.qml \
                     qml/components/AlbumEntry.qml \
 #                    qml/components/PostTextArea.qml
 
 QML_COMPOSITE +=    qml/composite/UserInfo.qml \
-#                    qml/composite/PostList.qml \
+                    qml/composite/PostList.qml \
 #                    qml/composite/AlbumList.qml \
 #                    qml/composite/PhotoList.qml
 
 QML_PAGES +=        qml/pages/MainPage.qml \
-                    qml/pages/AbstractFacebookPage.qml \
                     qml/pages/AboutPage.qml \
                     qml/pages/DevelopersPage.qml \
 #                    qml/pages/NewsPage.qml \
@@ -100,7 +99,7 @@ QML_PAGES +=        qml/pages/MainPage.qml \
 QML_DIALOGS +=      qml/dialogs/LoginSheet.qml \
 #                    qml/dialogs/FeedDialogSheet.qml
 
-DATA_FILES +=       data/friends.png \
+DATA_FILES +=       ../shared/data/friends.png \
                     data/developers.png \
                     data/comment-black.png \
                     data/comment-white.png \
@@ -108,10 +107,10 @@ DATA_FILES +=       data/friends.png \
                     data/like-white.png \
                     data/unlike-black.png \
                     data/unlike-white.png \
-                    data/sfiet_konstantin.jpg \
-                    data/aniket.jpg \
-                    data/w00t.jpg \
-                    data/zchydem.jpg \
+                    ../shared/data/sfiet_konstantin.jpg \
+                    ../shared/data/aniket.jpg \
+                    ../shared/data/w00t.jpg \
+                    ../shared/data/zchydem.jpg \
                     data/libfriends-qml-clientidplugin.so
 
 OTHER_FILES +=      $${QML_ROOT} \
@@ -155,10 +154,10 @@ INSTALLS +=     target \
                 dataFiles
 
 contains(MEEGO_EDITION, harmattan) {
-    desktopFile.files = qfb.desktop
+    desktopFile.files = $${APPNAME}.desktop
     desktopFile.path = /usr/share/applications
 
-    icon.files = qfb.png
+    icon.files = $${APPNAME}.png
     icon.path = /usr/share/icons/hicolor/80x80/apps
 
     INSTALLS += desktopFile icon

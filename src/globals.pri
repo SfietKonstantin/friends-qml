@@ -5,7 +5,7 @@ APPNAME = friends-qml
 # version
 VERSION_MAJOR = 0
 VERSION_MINOR = 1
-VERSION_PATCH = 2
+VERSION_PATCH = 4
 
 !isEmpty(DEPLOYMENT_PREFIX) {
     PREFIX=$${DEPLOYMENT_PREFIX}
@@ -29,7 +29,7 @@ isEmpty(SHAREDIR) {
     SHAREDIR = $${PREFIX}/share/$${NAME}
 }
 isEmpty(OPTDIR) {
-    OPTDIR = $${DEPLOYMENT_PREFIX}/opt/$${NAME}
+    OPTDIR = $${DEPLOYMENT_PREFIX}/opt/$${APPNAME}
 }
 isEmpty(IMPORTSDIR) {
     IMPORTSDIR = $${PREFIX}/lib/qt4/imports

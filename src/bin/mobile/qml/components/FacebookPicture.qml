@@ -22,8 +22,7 @@ import "../UiConstants.js" as Ui
 Image {
     id: picture
     property string identifier
-    onIdentifierChanged: _imageLoader_.load(_imageLoader_.pictureUrl(identifier,
-                                                                     _facebook_.accessToken))
+    onIdentifierChanged: imageLoader.load(imageLoader.pictureUrl(identifier, facebook.accessToken))
     property bool loading: state != "visible"
     width: Ui.ICON_SIZE_DEFAULT
     height: Ui.ICON_SIZE_DEFAULT
@@ -50,9 +49,9 @@ Image {
     ]
 
     Connections {
-        target: _imageLoader_
+        target: imageLoader
         onLoaded: {
-            if (url == _imageLoader_.pictureUrl(picture.identifier,_facebook_.accessToken)) {
+            if (url == imageLoader.pictureUrl(picture.identifier, facebook.accessToken)) {
                 picture.source = path
             }
         }

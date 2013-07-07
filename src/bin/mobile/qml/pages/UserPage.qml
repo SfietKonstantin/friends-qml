@@ -20,40 +20,50 @@ import org.nemomobile.social 1.0
 //import org.SfietKonstantin.qfb.mobile 4.0
 import "../UiConstants.js" as Ui
 import "../pagemanagement.js" as PageManagement
-//import "../composite"
+import "../composite"
 import "../components"
 
-AbstractFacebookPage {
+Page {
     id: container
     property string identifier
     property string name
+    property string coverUrl
     property bool isUser: false
 
-    onStateChanged: {
-        if (state == "push_in") {
-            if (!isUser) {
-                _facebook_.nodeIdentifier = identifier
-                _facebook_.filters = []
-                _facebook_.sorters = []
-                _facebook_.populate()
-                _facebook_.nextNode()
-            } else {
-                cover.coverUrl = ME.coverUrl
-            }
-        }
+    function load() {
+        model.populate()
     }
+
+//    onStateChanged: {
+//        if (state == "push_in") {
+//            load(container.identifier, [_feedFilter_], [])
+//            _facebook_.dataFilters = [_storyDataFilter_]
+//            if (isUser) {
+//                container.coverUrl = ME.coverUrl
+//            }
+//        } else if (state == "pop_in") {
+//            _facebook_.dataFilters = [_storyDataFilter_]
+//        } else if (state == "push_out" || state == "pop_out") {
+//            _facebook_.dataFilters = []
+//        }
+//    }
 
     function setCover() {
-        cover.coverUrl = _facebook_.node.cover.source
+        container.coverUrl = model.node.cover.source
     }
 
-    Connections {
-        target: _facebook_
+    SocialNetworkModel {
+        id: model
+        socialNetwork: facebook
+        nodeIdentifier: container.identifier
+        filters: [feedFilter]
+        dataFilters: [storyDataFilter]
+
         onNodeChanged: {
-            if (_facebook_.node.type == Facebook.User) {
-                if (_facebook_.node.cover.source == "") {
-                    _facebook_.node.coverChanged.connect(container.setCover)
-                    _facebook_.node.reload("cover")
+            if (node.type == Facebook.User) {
+                if (node.cover.source == "") {
+                    node.coverChanged.connect(container.setCover)
+                    node.reload("cover")
                 } else {
                     setCover()
                 }
@@ -64,9 +74,7 @@ AbstractFacebookPage {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: {
-                PageManagement.pop(true, !container.isUser, !container.isUser)
-            }
+            onClicked: window.pageStack.pop()
         }
 
 //        ToolButton {
@@ -76,63 +84,69 @@ AbstractFacebookPage {
 
         ToolIcon {
             iconId: "toolbar-view-menu"
-            onClicked: {
-                menu.open()
-                createScreen()
-            }
+            onClicked: menu.open()
         }
     }
 
     Menu {
         id: menu
         MenuLayout {
-            MenuItem {
-                text: container.facebookId == ME.facebookId ? qsTr("Personnal informations")
-                                                            : qsTr("User informations")
-                onClicked: PageManagement.addPage("UserInfoPage.qml",
-                                                  {identifier: container.identifier,
-                                                   name: container.name,
-                                                   coverUrl: cover.coverUrl}, false, true)
-            }
+//            MenuItem {
+//                text: container.facebookId == ME.facebookId ? qsTr("Personnal informations")
+//                                                            : qsTr("User informations")
+//                onClicked: PageManagement.addPage("UserInfoPage.qml",
+//                                                  {identifier: container.identifier,
+//                                                   name: container.name,
+//                                                   coverUrl: container.coverUrl})
+//            }
             MenuItem {
                 text: qsTr("Albums")
                 onClicked: PageManagement.addPage("AlbumListPage.qml",
                                                   {identifier: container.identifier,
                                                    name: container.name,
-                                                   coverUrl: cover.coverUrl}, true, true)
+                                                   coverUrl: container.coverUrl}, true)
             }
             MenuItem {
                 text: qsTr("Photos")
                 onClicked: PageManagement.addPage("PhotoListPage.qml",
                                                   {identifier: container.identifier,
                                                    name: container.name,
-                                                   coverUrl: cover.coverUrl}, true, true)
+                                                   coverUrl: container.coverUrl}, true)
             }
         }
     }
 
-    ScrollDecorator { flickableItem: flickable }
     Flickable {
         id: flickable
         anchors.fill: parent
-        contentWidth: width
-        contentHeight: cover.height + postList.height + Ui.MARGIN_DEFAULT
+        contentHeight: cover.height + Ui.MARGIN_DEFAULT + column.height + Ui.MARGIN_DEFAULT
 
         UserCover {
             id: cover
             identifier: container.identifier
             name: container.name
+            coverUrl: container.coverUrl
         }
 
-//        PostList {
-//            id: postList
-//            anchors.top: cover.bottom; anchors.topMargin: Ui.MARGIN_DEFAULT
-//            facebookId: container.facebookId
-//            stream: "feed"
-//            onShowPost: PageManagement.addPage("PostPage", {facebookId: container.facebookId,
-//                                                            name: container.name,
-//                                                            coverUrl: cover.coverUrl,
-//                                                            post: post})
-//        }
+        Column {
+            id: column
+            anchors.top: cover.bottom; anchors.topMargin: Ui.MARGIN_DEFAULT
+            spacing: Ui.MARGIN_DEFAULT
+            Repeater {
+                model: model
+                delegate: Item {
+                    width: container.width
+                    height: content.height
+
+                    Post {
+                        id: content
+                        post: model.contentItem
+                        userIdentifier: container.identifier
+        //                interactive: true
+                    }
+                }
+            }
+        }
     }
+    ScrollDecorator { flickableItem: flickable }
 }

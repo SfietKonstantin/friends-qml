@@ -28,7 +28,7 @@ Page {
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
-            onClicked: PageManagement.pop(false, false)
+            onClicked: window.pageStack.pop()
         }
     }
 
@@ -91,24 +91,28 @@ Page {
         }
     }
 
-    Label {
-        id: title
-        anchors.top: parent.top; anchors.topMargin: Ui.MARGIN_DEFAULT
-        anchors.left: parent.left; anchors.leftMargin: Ui.MARGIN_DEFAULT
-        font.pixelSize: Ui.FONT_SIZE_XXLARGE
-        font.bold: true
-        text: qsTr("Developers")
-    }
 
     ListView {
         id: view
         clip: true
-        anchors.top: title.bottom; anchors.topMargin: Ui.MARGIN_DEFAULT
-        anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
+        anchors.fill: parent
         model: model
         section.property: "category"
         section.delegate: GroupIndicator {
             text: section
+        }
+
+        header: Item {
+            width: view.width
+            height: title.height + 2 * Ui.MARGIN_DEFAULT
+            Label {
+                id: title
+                anchors.top: parent.top; anchors.topMargin: Ui.MARGIN_DEFAULT
+                anchors.left: parent.left; anchors.leftMargin: Ui.MARGIN_DEFAULT
+                font.pixelSize: Ui.FONT_SIZE_XXLARGE
+                font.bold: true
+                text: qsTr("Developers")
+            }
         }
 
         delegate: Item {
@@ -162,6 +166,4 @@ Page {
             }
         }
     }
-
-
 }

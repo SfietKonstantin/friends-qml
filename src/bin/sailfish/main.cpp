@@ -10,6 +10,9 @@
 #include "../shared/me.h"
 #include "loginmanager.h"
 
+static const char *FACEBOOK_PAGE = "https://m.facebook.com/friendsforn9";
+static const char *PAYPAL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&\
+hosted_button_id=RZ2A2ZB93827Y";
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -28,6 +31,12 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     view.data()->rootContext()->setContextProperty("LOGIN_MANAGER", &loginManager);
     view.data()->rootContext()->setContextProperty("TOKEN_MANAGER", &tokenManager);
     view.data()->rootContext()->setContextProperty("ME", &me);
+    view.data()->rootContext()->setContextProperty("DATA_PATH", DATA_PATH);
+    view.data()->rootContext()->setContextProperty("FACEBOOK_PAGE", FACEBOOK_PAGE);
+    view.data()->rootContext()->setContextProperty("PAYPAL_DONATE", PAYPAL_DONATE);
+    view.data()->rootContext()->setContextProperty("VERSION_MAJOR", QString::number(VERSION_MAJOR));
+    view.data()->rootContext()->setContextProperty("VERSION_MINOR", QString::number(VERSION_MINOR));
+    view.data()->rootContext()->setContextProperty("VERSION_PATCH", QString::number(VERSION_PATCH));
     if (!clientId.isEmpty()) {
         view.data()->rootContext()->setContextProperty("CLIENT_ID", clientId);
     }

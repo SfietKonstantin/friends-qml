@@ -21,95 +21,65 @@ import "../UiConstants.js" as Ui
 import "../pagemanagement.js" as PageManagement
 import "../components"
 
-AbstractFacebookPage {
+Page {
     id: container
     tools: ToolBarLayout {
         ToolIcon {
             iconId: "toolbar-back"
+            onClicked: window.pageStack.pop()
+        }
+    }
+
+    function load() {
+        model.populate()
+    }
+
+    SocialNetworkModel {
+        id: model
+        socialNetwork: facebook
+        nodeIdentifier: ME.identifier
+        filters: [friendsFilter]
+        sorters: [nameSorter]
+    }
+
+    Cover {
+        id: cover
+        name: ME.name
+        category: qsTr("Friends")
+        coverUrl: ME.coverUrl
+    }
+
+    ListView {
+        id: view
+        anchors.top: cover.bottom; anchors.bottom: parent.bottom
+        anchors.left: parent.left; anchors.right: parent.right
+        clip: true
+        model: model
+        delegate: FriendEntry {
+            identifier: model.contentItem.identifier
+            name: model.contentItem.name
             onClicked: {
-                PageManagement.pop(true, false, true)
+                PageManagement.addPage("UserPage.qml",
+                                       {identifier: model.contentItem.identifier,
+                                        name: model.contentItem.name}, true)
             }
         }
-    }
-
-    onStateChanged: {
-        if (state == "push_in") {
-            _facebook_.nodeIdentifier = ME.identifier
-            _facebook_.filters = [_friendsFilter_]
-            _facebook_.sorters = [_nameSorter_]
-            _facebook_.populate()
-            _facebook_.nextNode()
-        } else if (state == "pop_in") {
-            _facebook_.sorters = [_nameSorter_]
-        }
-    }
-
-    Item {
-        anchors.fill: parent
-
-        Cover {
-            id: cover
-            name: ME.name
-            category: qsTr("Friends")
-            coverUrl: ME.coverUrl
+        cacheBuffer: Ui.LIST_ITEM_HEIGHT_DEFAULT * 5
+        section.property: "section"
+        section.criteria : ViewSection.FirstCharacter
+        section.delegate: GroupIndicator {
+            text: section
         }
 
-        ListView {
-            id: view
-            property double opacityValue: 0
-            anchors.top: cover.bottom; anchors.bottom: parent.bottom
-            anchors.left: parent.left; anchors.right: parent.right
-            highlightFollowsCurrentItem: true
-            clip: true
-            model: container.available ? _facebook_ : null
-            delegate: FriendEntry {
-                identifier: model.contentItem.identifier
-                name: model.contentItem.name
-                opacity: view.opacityValue
-                onClicked: {
-                    PageManagement.addPage("UserPage.qml",
-                                           {identifier: model.contentItem.identifier,
-                                            name: model.contentItem.name}, true, true)
-                }
-            }
-            section.property: "section"
-            section.criteria : ViewSection.FirstCharacter
-            section.delegate: GroupIndicator {
-                text: section
-                opacity: view.opacityValue
-            }
+        ScrollDecorator {flickableItem: parent}
 
-            ScrollDecorator {flickableItem: parent}
-            cacheBuffer: Ui.LIST_ITEM_HEIGHT_DEFAULT * 5
-            states: [
-                State {
-                    name: "loaded"; when: !container.loading
-                    PropertyChanges {
-                        target: view
-                        opacityValue: 1
-                    }
-                }
-            ]
+        LoadingMessage {
+            loading: model.status != SocialNetwork.Idle
+        }
 
-            Behavior on opacityValue {
-                NumberAnimation { duration: Ui.ANIMATION_DURATION_FAST }
-            }
-
-            LoadingMessage {
-                loading: container.loading
-            }
-
-            EmptyStateLabel {
-                visible: !container.loading && container.available && view.count == 0
-                text: qsTr("No friends")
-            }
-
-            ViewPreviousTracker {
-                view: view
-                available: container.available
-                mode: ListView.Beginning
-            }
-
+        EmptyStateLabel {
+            visible: model.status == SocialNetwork.Idle && model.count == 0
+            text: qsTr("No friends")
         }
     }
 }

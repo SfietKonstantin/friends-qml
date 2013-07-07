@@ -50,7 +50,8 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: qsTr("About")
-             }
+                onClicked: window.pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 /****************************************************************************************
- * Copyright (C) 2012 Lucien XU <sfietkonstantin@free.fr>                               *
+ * Copyright (C) 2011 Lucien XU <sfietkonstantin@free.fr>                               *
  *                                                                                      *
  * This program is free software; you can redistribute it and/or modify it under        *
  * the terms of the GNU General Public License as published by the Free Software        *
@@ -14,38 +14,26 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.                           *
  ****************************************************************************************/
 
-function addPage(name, properties, callLoad) {
-    var newPage = window.pageStack.push(Qt.resolvedUrl(name), properties)
-    if (callLoad) {
-        newPage.load()
+import QtQuick 1.1
+import com.nokia.meego 1.0
+import "../UiConstants.js" as Ui
+
+Item {
+    id: container
+    property bool loading: false
+    property real margins: Ui.MARGIN_DEFAULT
+    height: loading ? Ui.LIST_ITEM_HEIGHT_DEFAULT + 2 * margins : margins
+    Row {
+        anchors.centerIn: parent
+        visible: loading
+        spacing: Ui.MARGIN_DEFAULT
+
+        BusyIndicator {
+            running: parent.visible
+        }
+
+        Label {
+            text: qsTr("Loading")
+        }
     }
-}
-
-function showPhotoViewer(model, index) {
-    var newPage = window.pageStack.push(Qt.resolvedUrl("PhotoViewerPage.qml", {}))
-    newPage.model = model
-    newPage.setPosition(index)
-}
-
-function popFromPhotoViewer(index) {
-    window.pageStack.pop()
-
-    var photoListPage = window.pageStack.currentPage
-    photoListPage.repositionView(index)
-}
-
-//function showFeedDialog(facebookId) {
-//    _feed_dialog_.to = facebookId
-//    _feed_dialog_.showDialog()
-//}
-
-//function resolveType(facebookId, name) {
-//    _type_resolver_.resolvedName = name
-//    _type_resolver_.request(facebookId)
-//}
-
-function openWebBrowser(url) {
-    Qt.openUrlExternally(url)
-    _launching_web_browser_info_banner_.parent = _window_.pageStack.currentPage
-    _launching_web_browser_info_banner_.show()
 }

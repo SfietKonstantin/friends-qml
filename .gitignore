@@ -4,6 +4,7 @@ build
 install
 qtc_packaging
 src/extra/clientid-plugin
+switch-*.sh
 
 # Other files
 src/bin/mobile/mobilepostvalidator.cpp

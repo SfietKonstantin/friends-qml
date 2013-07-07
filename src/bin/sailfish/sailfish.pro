@@ -21,10 +21,20 @@ SOURCES += main.cpp \
 
 OTHER_FILES += main.qml \
                 UiConstants.js \
+                AbstractFacebookPage.qml \
                 LoginPage.qml \
                 MainPage.qml \
                 FacebookCover.qml \
-                FacebookImage.qml
+                FacebookImage.qml \
+                AboutPage.qml \
+                DevelopersPage.qml \
+                FriendsPage.qml
+
+OTHER_FILES +=  ../shared/data/friends.png \
+                ../shared/data/sfiet_konstantin.jpg \
+                ../shared/data/aniket.jpg \
+                ../shared/data/w00t.jpg \
+                ../shared/data/zchydem.jpg \
 
 target.path = $${BINDIR}
 
@@ -34,6 +44,7 @@ qml.files = $${OTHER_FILES}
 INSTALLS += target qml
 
 DEFINES += DEPLOYMENT_PATH=\"\\\"\"$${SHAREDIR}/\"\\\"\"
+DEFINES += 'DATA_PATH=\'\"$${SHAREDIR}/\"\''
 
 CONFIG += link_pkgconfig
 packagesExist(qdeclarative-boostable) {
